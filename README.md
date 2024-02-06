@@ -1,8 +1,27 @@
-# React + Vite
+# Mobiscroll React Demos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Clone the repository
 
-Currently, two official plugins are available:
+$ ```git clone https://github.com/acidb/mobiscroll-demos-react.git```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Install the Mobiscroll CLI
+
+$ ```npm install -g @mobiscroll/cli```
+
+### Start a trial
+
+if not started or do not have license [start a trial here](https://mobiscroll.com/starttrial)
+
+### Config Mobiscroll
+
+run the $ ```mobiscroll config react``` command in in the root folder
+
+### Install dependencies
+
+run $ ```npm install``` command in the root folder
+  
+## Run the project
+
+$ ```npm run dev```
+
+Do you have a problem with any of the demos? Let us know either by sending an email to support@mobiscroll.com or by submitting a pull request, submitting an issue.
