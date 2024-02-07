@@ -17,17 +17,21 @@ setOptions({
 });
 
 function App() {
-  const [view, setView] = useState('agenda');
-  const [myEvents, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [calView, setCalView] = useState({ agenda: { type: 'month' } });
+  const [currentView, setCurrentView] = useState('agenda');
+  const [myEvents, setEvents] = useState([]);
+  const [myView, setView] = useState({ agenda: { type: 'month' } });
+
+  const handleSelectedDateChange = useCallback((args) => {
+    setCurrentDate(args.date);
+  }, []);
 
   const changeView = useCallback((event) => {
     let view;
     switch (event.target.value) {
       case 'calendar':
         view = {
-          calendar: { labels: true },
+          calendar: { type: 'month' },
         };
         break;
       case 'agenda':
@@ -37,48 +41,36 @@ function App() {
         break;
     }
 
-    setView(event.target.value);
-    setCalView(view);
+    setCurrentView(event.target.value);
+    setView(view);
   }, []);
 
-  const handleSelectedDateChange = useCallback((event) => {
-    setCurrentDate(event.date);
+  const prevPage = useCallback(() => {
+    setCurrentDate((currentDate) => new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   }, []);
 
-  const navigateToPrevPage = useCallback(() => {
-    const prevPage = new Date(currentDate);
-
-    prevPage.setDate(1);
-    prevPage.setMonth(prevPage.getMonth() - 1);
-    setCurrentDate(prevPage);
-  }, [currentDate]);
-
-  const navigateToNextPage = useCallback(() => {
-    const nextPage = new Date(currentDate);
-
-    nextPage.setDate(1);
-    nextPage.setMonth(nextPage.getMonth() + 1);
-    setCurrentDate(nextPage);
-  }, [currentDate]);
+  const nextPage = useCallback(() => {
+    setCurrentDate((currentDate) => new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  }, []);
 
   const customWithNavButtons = useCallback(
     () => (
       <>
-        <CalendarNav className="md-custom-header-nav" />
-        <div className="md-custom-header-controls">
-          <Button onClick={navigateToPrevPage} icon="material-arrow-back" variant="flat" className="md-custom-header-button"></Button>
+        <CalendarNav className="mds-custom-header-nav" />
+        <div className="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-center">
+          <Button onClick={prevPage} icon="material-arrow-back" variant="flat" className="mds-custom-header-button"></Button>
           <CalendarToday className="md-custom-header-today" />
-          <Button onClick={navigateToNextPage} icon="material-arrow-forward" variant="flat" className="md-custom-header-button"></Button>
+          <Button onClick={nextPage} icon="material-arrow-forward" variant="flat" className="mds-custom-header-button"></Button>
         </div>
-        <div className="md-custom-header-view">
-          <SegmentedGroup value={view} onChange={changeView}>
+        <div className="mds-custom-header-switch">
+          <SegmentedGroup value={currentView} onChange={changeView}>
             <Segmented value="agenda" icon="material-view-day" />
             <Segmented value="calendar" icon="calendar" />
           </SegmentedGroup>
         </div>
       </>
     ),
-    [changeView, navigateToNextPage, navigateToPrevPage, view],
+    [changeView, currentView, prevPage, nextPage],
   );
 
   useEffect(() => {
@@ -93,12 +85,11 @@ function App() {
 
   return (
     <Eventcalendar
-      cssClass="md-custom-header"
-      onSelectedDateChange={handleSelectedDateChange}
-      selectedDate={currentDate}
-      renderHeader={customWithNavButtons}
-      view={calView}
       data={myEvents}
+      renderHeader={customWithNavButtons}
+      selectedDate={currentDate}
+      view={myView}
+      onSelectedDateChange={handleSelectedDateChange}
     />
   );
 }

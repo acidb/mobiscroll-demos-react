@@ -1,5 +1,6 @@
 import { Button, Eventcalendar, Page, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
 import { useCallback, useMemo, useState } from 'react';
+import './event-data-structure.css';
 
 setOptions({
   // localeJs,
@@ -9,6 +10,7 @@ setOptions({
 const now = new Date();
 
 function App() {
+  const [isToastOpen, setToastOpen] = useState(false);
   const [myEvents, setEvents] = useState([
     {
       start: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13),
@@ -17,8 +19,7 @@ function App() {
       color: '#35bb5a',
     },
   ]);
-  const [selectedDate, setSelectedDate] = useState();
-  const [isToastOpen, setToastOpen] = useState(false);
+  const [mySelectedDate, setSelectedDate] = useState();
 
   const myView = useMemo(() => ({ agenda: { type: 'month' } }), []);
 
@@ -32,12 +33,12 @@ function App() {
 
   const addEvent = useCallback(() => {
     const newEvent = {
-      // base properties
+      // Base properties
       title: 'Product planning',
       color: '#56ca70',
       start: new Date(2018, 11, 21, 13),
       end: new Date(2018, 11, 21, 14),
-      // add any property you'd like
+      // Add any property you'd like
       busy: true,
       description: 'Weekly meeting with team',
       location: 'Office',
@@ -49,10 +50,16 @@ function App() {
   }, []);
 
   return (
-    <Page>
-      <Eventcalendar data={myEvents} view={myView} selectedDate={selectedDate} onSelectedDateChange={handleSelectedDateChange} />
-      <div className="mbsc-button-group-block">
-        <Button onClick={addEvent}>Add event to calendar</Button>
+    <Page className="mds-full-height">
+      <div className="mds-full-height mbsc-flex-col">
+        <div className="mbsc-flex-none">
+          <Button onClick={addEvent} startIcon="plus">
+            Add event to calendar
+          </Button>
+        </div>
+        <div className="mds-overflow-hidden mbsc-flex-1-1">
+          <Eventcalendar data={myEvents} view={myView} selectedDate={mySelectedDate} onSelectedDateChange={handleSelectedDateChange} />
+        </div>
       </div>
       <Toast message="Event added" isOpen={isToastOpen} onClose={handleCloseToast} />
     </Page>

@@ -1,4 +1,4 @@
-import { Eventcalendar, getJson, hijriCalendar, jalaliCalendar, localeAr, localeFa, Page, setOptions } from '@mobiscroll/react';
+import { Eventcalendar, getJson, hijriCalendar, jalaliCalendar, localeAr, localeEn, localeFa, Page, setOptions } from '@mobiscroll/react';
 import { useEffect, useMemo, useState } from 'react';
 
 setOptions({
@@ -33,7 +33,7 @@ function App() {
           <div className="mbsc-col-sm-12 mbsc-col-md-4">
             <div className="mbsc-form-group">
               <div className="mbsc-form-group-title">Gregorian calendar</div>
-              <Eventcalendar data={myEvents} view={myView} />
+              <Eventcalendar data={myEvents} locale={localeEn} view={myView} />
             </div>
           </div>
           <div className="mbsc-col-sm-12 mbsc-col-md-4">

@@ -8,12 +8,12 @@ setOptions({
 });
 
 function App() {
-  const [events, setEvents] = useState([]);
+  const [myEvents, setEvents] = useState([]);
   const [isToastOpen, setToastOpen] = useState(false);
 
   const myView = useMemo(() => ({ agenda: { labels: 'month' } }), []);
 
-  const handleCloseToast = useCallback(() => {
+  const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
 
@@ -23,8 +23,8 @@ function App() {
 
     getJson(
       'https://trial.mobiscroll.com/monthlyevents/?year=' + year + '&month=' + month + '&vers=5',
-      (data) => {
-        setEvents(data);
+      (events) => {
+        setEvents(events);
         setToastOpen(true);
       },
       'jsonp',
@@ -33,8 +33,8 @@ function App() {
 
   return (
     <>
-      <Eventcalendar data={events} view={myView} onPageLoading={handlePageLoading} />
-      <Toast message="New events loaded" isOpen={isToastOpen} onClose={handleCloseToast} />
+      <Eventcalendar data={myEvents} view={myView} onPageLoading={handlePageLoading} />
+      <Toast message="New events loaded" isOpen={isToastOpen} onClose={handleToastClose} />
     </>
   );
 }

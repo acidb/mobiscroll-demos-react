@@ -8,11 +8,11 @@ setOptions({
 });
 
 function App() {
-  const [mySelectedDate, setSelectedDate] = useState(new Date());
   const [myEvents, setEvents] = useState([]);
+  const [mySelectedDate, setSelectedDate] = useState(new Date());
 
-  const monthView = useMemo(() => ({ calendar: { popover: false, labels: false } }), []);
   const dayView = useMemo(() => ({ agenda: { type: 'day' } }), []);
+  const monthView = useMemo(() => ({ calendar: { popover: false, labels: false } }), []);
 
   const handleDateChange = useCallback((event) => {
     setSelectedDate(event.date);
@@ -29,15 +29,19 @@ function App() {
   }, []);
 
   return (
-    <div className="mbsc-grid md-demo-synchronized-views">
+    <div className="mbsc-grid mds-sync-view">
       <div className="mbsc-row mbsc-no-padding">
-        <div className="mbsc-col-md-4 mbsc-col-12">
-          <div>
-            <Eventcalendar view={monthView} data={myEvents} selectedDate={mySelectedDate} onSelectedDateChange={handleDateChange} />
-          </div>
+        <div className="mbsc-col-12 mbsc-col-md-4 mbsc-col-xl-3">
+          <Eventcalendar
+            data={myEvents}
+            height="auto"
+            selectedDate={mySelectedDate}
+            view={monthView}
+            onSelectedDateChange={handleDateChange}
+          />
         </div>
-        <div className="mbsc-col-md-8 mbsc-col-12 md-col-right">
-          <Eventcalendar view={dayView} data={myEvents} selectedDate={mySelectedDate} onSelectedDateChange={handleDateChange} />
+        <div className="mds-sync-cal mbsc-col-12 mbsc-col-md-8 mbsc-col-xl-9">
+          <Eventcalendar data={myEvents} selectedDate={mySelectedDate} view={dayView} onSelectedDateChange={handleDateChange} />
         </div>
       </div>
     </div>

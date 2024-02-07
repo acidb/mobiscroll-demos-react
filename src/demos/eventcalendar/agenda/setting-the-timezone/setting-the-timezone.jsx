@@ -60,7 +60,7 @@ function App() {
 
   const myView = useMemo(() => ({ agenda: { type: 'week' } }), []);
 
-  return <Eventcalendar dataTimezone="utc" displayTimezone="local" timezonePlugin={momentTimezone} data={myEvents} view={myView} />;
+  return <Eventcalendar data={myEvents} dataTimezone="utc" displayTimezone="local" timezonePlugin={momentTimezone} view={myView} />;
 }
 
 export default App;

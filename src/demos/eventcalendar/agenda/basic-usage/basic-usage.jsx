@@ -9,12 +9,12 @@ setOptions({
 function App() {
   const [myEvents, setEvents] = useState([]);
   const [isToastOpen, setToastOpen] = useState(false);
-  const [toastText, setToastText] = useState();
+  const [toastMessage, setToastMessage] = useState();
 
   const myView = useMemo(() => ({ agenda: { type: 'month' } }), []);
 
-  const onEventClick = useCallback((args) => {
-    setToastText(args.event.title);
+  const handleEventClick = useCallback((args) => {
+    setToastMessage(args.event.title);
     setToastOpen(true);
   }, []);
 
@@ -33,10 +33,10 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Eventcalendar data={myEvents} view={myView} onEventClick={onEventClick} />
-      <Toast message={toastText} isOpen={isToastOpen} onClose={handleCloseToast} />
-    </div>
+    <>
+      <Eventcalendar data={myEvents} view={myView} onEventClick={handleEventClick} />
+      <Toast message={toastMessage} isOpen={isToastOpen} onClose={handleCloseToast} />
+    </>
   );
 }
 

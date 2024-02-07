@@ -21,20 +21,20 @@ setOptions({
 const CALENDAR_ID = 'theacidmedia.net_8l6v679q5j2f7q8lpmcjr4mm3k@group.calendar.google.com';
 
 function App() {
-  const [myEvents, setEvents] = useState([]);
+  const [currentView, setCurrentView] = useState('agenda');
   const [isLoading, setLoading] = useState(false);
   const [isToastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [view, setView] = useState('agenda');
-  const [myView, setCalView] = useState({
+  const [myEvents, setEvents] = useState([]);
+  const [myView, setView] = useState({
     calendar: { type: 'week' },
     agenda: { type: 'week' },
   });
+  const [toastMessage, setToastMessage] = useState('');
 
   const firstDay = useRef();
   const lastDay = useRef();
 
-  const onError = useCallback((resp) => {
+  const handleError = useCallback((resp) => {
     setToastMessage(resp.error ? resp.error : resp.result.error.message);
     setToastOpen(true);
   }, []);
@@ -44,79 +44,45 @@ function App() {
       setLoading(true);
     });
     googleCalendarSync
-      .getEvents(CALENDAR_ID, firstDay, lastDay)
-      .then(function (resp) {
-        setLoading(false);
+      .getEvents(CALENDAR_ID, firstDay.current, lastDay.current)
+      .then((resp) => {
         setEvents(resp);
+        setLoading(false);
       })
-      .catch(onError);
-  }, [firstDay, lastDay, onError]);
+      .catch(handleError);
+  }, [handleError]);
 
   const changeView = useCallback((event) => {
-    let calView;
+    let view;
 
     switch (event.target.value) {
       case 'month':
-        calView = {
+        view = {
           calendar: { labels: true },
         };
         break;
       case 'week':
-        calView = {
+        view = {
           schedule: { type: 'week' },
         };
         break;
       case 'day':
-        calView = {
+        view = {
           schedule: { type: 'day' },
         };
         break;
       case 'agenda':
       default:
-        calView = {
+        view = {
           calendar: { type: 'week' },
           agenda: { type: 'week' },
         };
         break;
     }
 
-    setView(event.target.value);
-    setCalView(calView);
+    setCurrentView(event.target.value);
+    setView(view);
   }, []);
-
-  const customWithNavButtons = useCallback(
-    () => (
-      <>
-        <CalendarNav className="google-cal-header-nav" />
-        <div className="md-spinner">
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-          <div className="md-spinner-blade"></div>
-        </div>
-        <div className="google-cal-header-picker">
-          <SegmentedGroup value={view} onChange={changeView}>
-            <Segmented value="month">Month</Segmented>
-            <Segmented value="week">Week</Segmented>
-            <Segmented value="day">Day</Segmented>
-            <Segmented value="agenda">Agenda</Segmented>
-          </SegmentedGroup>
-        </div>
-        <CalendarPrev className="google-cal-header-prev" />
-        <CalendarToday className="google-cal-header-today" />
-        <CalendarNext className="google-cal-header-next" />
-      </>
-    ),
-    [changeView, view],
-  );
 
   const handlePageLoading = useCallback(
     (event) => {
@@ -125,7 +91,7 @@ function App() {
 
       // Calculate dates
       // (pre-load events for previous and next pages as well)
-      if (view === 'month') {
+      if (currentView === 'month') {
         firstDay.current = start;
         lastDay.current = end;
       } else {
@@ -135,12 +101,33 @@ function App() {
 
       loadEvents();
     },
-    [loadEvents, view],
+    [loadEvents, currentView],
   );
 
   const handleCloseToast = useCallback(() => {
     setToastOpen(false);
   }, []);
+
+  const customHeader = useCallback(
+    () => (
+      <>
+        <CalendarNav className="mds-google-cal-nav" />
+        <div className={'mds-loader' + (isLoading ? ' mds-loader-visible' : '')}></div>
+        <div className="mds-google-cal-switch mbsc-flex-1-0">
+          <SegmentedGroup value={currentView} onChange={changeView}>
+            <Segmented value="month">Month</Segmented>
+            <Segmented value="week">Week</Segmented>
+            <Segmented value="day">Day</Segmented>
+            <Segmented value="agenda">Agenda</Segmented>
+          </SegmentedGroup>
+        </div>
+        <CalendarPrev className="mds-google-cal-prev" />
+        <CalendarToday className="mds-google-cal-today" />
+        <CalendarNext className="mds-google-cal-next" />
+      </>
+    ),
+    [changeView, currentView, isLoading],
+  );
 
   useEffect(() => {
     googleCalendarSync.init({
@@ -151,14 +138,7 @@ function App() {
 
   return (
     <>
-      <Eventcalendar
-        className={'md-google-calendar ' + (isLoading ? 'md-loading-events' : '')}
-        exclusiveEndDates={true}
-        view={myView}
-        data={myEvents}
-        onPageLoading={handlePageLoading}
-        renderHeader={customWithNavButtons}
-      />
+      <Eventcalendar data={myEvents} exclusiveEndDates={true} renderHeader={customHeader} view={myView} onPageLoading={handlePageLoading} />
       <Toast isOpen={isToastOpen} message={toastMessage} onClose={handleCloseToast} />
     </>
   );

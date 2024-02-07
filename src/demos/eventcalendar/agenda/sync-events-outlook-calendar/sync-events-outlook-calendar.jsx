@@ -5,7 +5,6 @@ import {
   CalendarNext,
   CalendarPrev,
   Eventcalendar,
-  Page,
   Popup,
   setOptions,
   Switch,
@@ -20,23 +19,23 @@ setOptions({
 });
 
 function App() {
-  const [myEvents, setEvents] = useState([]);
-  const [myCalendars, setCalendars] = useState([]);
-  const [calendarIds, setCalendarIds] = useState([]);
   const [calendarData, setCalendarData] = useState([]);
+  const [calendarIds, setCalendarIds] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isOpen, setOpen] = useState(false);
-  const [myAnchor, setAnchor] = useState(null);
-  const [mySelectedDate, setSelectedDate] = useState(new Date());
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [isToastOpen, setToastOpen] = useState(false);
+  const [myAnchor, setAnchor] = useState();
+  const [myCalendars, setCalendars] = useState([]);
+  const [myEvents, setEvents] = useState([]);
+  const [mySelectedDate, setSelectedDate] = useState(new Date());
   const [toastMessage, setToastMessage] = useState('');
 
-  const { current: view } = useRef({ agenda: { type: 'month' } });
-  const buttonRef = useRef(null);
-  const debounce = useRef();
+  const { current: myView } = useRef({ agenda: { type: 'month' } });
+  const buttonRef = useRef();
   const startDate = useRef();
   const endDate = useRef();
+  const timer = useRef();
 
   const handleError = useCallback((resp) => {
     setToastMessage(resp.message);
@@ -48,19 +47,19 @@ function App() {
   }, []);
 
   const handlePopupClose = useCallback(() => {
-    setOpen(false);
+    setPopupOpen(false);
   }, []);
 
-  const handleSelectedDateChange = useCallback((event) => {
-    setSelectedDate(event.date);
+  const handleSelectedDateChange = useCallback((args) => {
+    setSelectedDate(args.date);
   }, []);
 
   const handlePageLoading = useCallback(
     (args) => {
-      clearTimeout(debounce.current);
       startDate.current = args.viewStart;
       endDate.current = args.viewEnd;
-      debounce.current = setTimeout(() => {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
         if (outlookCalendarSync.isSignedIn()) {
           setLoading(true);
           outlookCalendarSync
@@ -76,9 +75,32 @@ function App() {
     [calendarIds, handleError],
   );
 
+  const toggleCalendar = useCallback(
+    (ev) => {
+      const checked = ev.target.checked;
+      const calendarId = ev.target.value;
+      calendarData[calendarId].checked = checked;
+      if (checked) {
+        setLoading(true);
+        setCalendarIds((oldCalendarIds) => [...oldCalendarIds, calendarId]);
+        outlookCalendarSync
+          .getEvents([calendarId], startDate.current, endDate.current)
+          .then((events) => {
+            setLoading(false);
+            setEvents((oldEvents) => [...oldEvents, ...events]);
+          })
+          .catch(handleError);
+      } else {
+        setCalendarIds((oldCalendarIds) => oldCalendarIds.filter((id) => id !== calendarId));
+        setEvents((oldEvents) => oldEvents.filter((event) => event.outlookCalendarId !== calendarId));
+      }
+    },
+    [calendarData, handleError],
+  );
+
   const openPopup = useCallback(() => {
     setAnchor(buttonRef.current.nativeElement);
-    setOpen(true);
+    setPopupOpen(true);
   }, []);
 
   const navigate = useCallback(() => {
@@ -93,62 +115,27 @@ function App() {
     outlookCalendarSync.signOut().catch(handleError);
   }, [handleError]);
 
-  const toggleCalendar = useCallback(
-    (ev) => {
-      const checked = ev.target.checked;
-      const calendarId = ev.target.value;
-      calendarData[calendarId].checked = checked;
-      if (checked) {
-        setLoading(true);
-        setCalendarIds((calIds) => [...calIds, calendarId]);
-        outlookCalendarSync
-          .getEvents([calendarId], startDate.current, endDate.current)
-          .then((events) => {
-            setLoading(false);
-            setEvents((oldEvents) => [...oldEvents, ...events]);
-          })
-          .catch(handleError);
-      } else {
-        setCalendarIds((calIds) => calIds.filter((item) => item !== calendarId));
-        setEvents((oldEvents) => oldEvents.filter((item) => item.outlookCalendarId !== calendarId));
-      }
-    },
-    [calendarData, handleError],
-  );
-
-  const renderMyHeader = useCallback(() => {
-    <>
-      <CalendarNav className="md-sync-events-outlook-nav" />
-      <div className="md-spinner">
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-        <div className="md-spinner-blade"></div>
-      </div>
-      <div className="md-outlook-calendar-buttons">
-        {isLoggedIn ? (
-          <Button ref={buttonRef} onClick={openPopup} className="md-sync-events-outlook-button">
-            My Calendars
-          </Button>
-        ) : (
-          <Button onClick={signIn} className="md-sync-events-outlook-button">
-            Sync my outlook calendars
-          </Button>
-        )}
-        <Button onClick={navigate}>Today</Button>
+  const customHeader = useCallback(
+    () => (
+      <>
+        <CalendarNav />
+        <div className={'mds-loader' + (isLoading ? ' mds-loader-visible' : '')}></div>
+        <div className="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-end">
+          {isLoggedIn ? (
+            <Button ref={buttonRef} onClick={openPopup}>
+              My Calendars
+            </Button>
+          ) : (
+            <Button onClick={signIn}>Sync my Outlook calendars</Button>
+          )}
+          <Button onClick={navigate}>Today</Button>
+        </div>
         <CalendarPrev />
         <CalendarNext />
-      </div>
-    </>;
-  }, [isLoggedIn, navigate, openPopup, signIn]);
+      </>
+    ),
+    [isLoading, isLoggedIn, navigate, openPopup, signIn],
+  );
 
   useEffect(() => {
     const onSignedIn = () => {
@@ -157,19 +144,20 @@ function App() {
         .getCalendars()
         .then((calendars) => {
           const newCalendarIds = [];
-          const calData = {};
+          const newCalendarData = {};
 
           calendars.sort((c) => (c.isDefaultCalendar ? -1 : 1));
 
           for (const c of calendars) {
             newCalendarIds.push(c.id);
-            calData[c.id] = { checked: true };
+            newCalendarData[c.id] = { checked: true };
           }
 
           setCalendarIds(newCalendarIds);
-          setCalendarData(calData);
+          setCalendarData(newCalendarData);
           setCalendars(calendars);
           setLoading(true);
+
           return outlookCalendarSync.getEvents(newCalendarIds, startDate.current, endDate.current);
         })
         .then((events) => {
@@ -180,12 +168,12 @@ function App() {
     };
 
     const onSignedOut = () => {
-      setIsLoggedIn(false);
       setCalendars([]);
       setCalendarIds([]);
       setCalendarData({});
+      setIsLoggedIn(false);
       setEvents([]);
-      setOpen(false);
+      setPopupOpen(false);
     };
 
     // init outlook client
@@ -198,41 +186,41 @@ function App() {
   }, [handleError]);
 
   return (
-    <Page className={'md-sync-events-outlook-cont ' + (isLoading ? 'md-loading-events' : '')}>
+    <>
       <Eventcalendar
-        view={view}
         data={myEvents}
         exclusiveEndDates={true}
+        renderHeader={customHeader}
         selectedDate={mySelectedDate}
-        renderHeader={renderMyHeader}
+        view={myView}
         onPageLoading={handlePageLoading}
         onSelectedDateChange={handleSelectedDateChange}
       />
       <Popup
-        isOpen={isOpen}
         anchor={myAnchor}
-        onClose={handlePopupClose}
-        width={400}
-        touchUi={false}
-        showOverlay={false}
-        scrollLock={false}
         contentPadding={false}
         display="anchored"
+        isOpen={isPopupOpen}
+        scrollLock={false}
+        showOverlay={false}
+        touchUi={false}
+        width={400}
+        onClose={handlePopupClose}
       >
-        <div className="mbsc-form-group-inset md-sync-events-outlook-inset">
+        <div className="mbsc-form-group-inset">
           <div className="mbsc-form-group-title">My Calendars</div>
           {myCalendars.map((cal) => (
             <Switch label={cal.name} key={cal.id} value={cal.id} checked={calendarData[cal.id].checked} onChange={toggleCalendar} />
           ))}
         </div>
         <div className="mbsc-form-group-inset">
-          <Button className="md-sync-events-outlook-button mbsc-button-block" onClick={signOut}>
-            Log out of my account
+          <Button className="mbsc-button-block" onClick={signOut}>
+            Sign out of my account
           </Button>
         </div>
       </Popup>
       <Toast isOpen={isToastOpen} message={toastMessage} onClose={handleToastClose} />
-    </Page>
+    </>
   );
 }
 export default App;
