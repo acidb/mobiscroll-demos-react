@@ -20,6 +20,8 @@ function App() {
   const myEvents = useMemo(
     () => [
       {
+        bufferBefore: 30,
+        bufferAfter: 35,
         start: 'dyndatetime(y,m,d,10,30)',
         end: 'dyndatetime(y,m,d,13)',
         title: 'Tire change',
@@ -28,6 +30,8 @@ function App() {
         resource: 1,
       },
       {
+        bufferAfter: 40,
+        bufferBefore: 30,
         start: 'dyndatetime(y,m,d,7)',
         end: 'dyndatetime(y,m,d,10)',
         title: 'Brake maintenance',
@@ -36,6 +40,8 @@ function App() {
         resource: 2,
       },
       {
+        bufferAfter: 45,
+        bufferBefore: 30,
         start: 'dyndatetime(y,m,d,13,30)',
         end: 'dyndatetime(y,m,d,16,30)',
         title: 'Fluid maintenance',
@@ -44,6 +50,8 @@ function App() {
         resource: 1,
       },
       {
+        bufferAfter: 35,
+        bufferBefore: 30,
         start: 'dyndatetime(y,m,d,11)',
         end: 'dyndatetime(y,m,d,14)',
         title: 'Oil change',
@@ -52,14 +60,18 @@ function App() {
         resource: 3,
       },
       {
+        bufferAfter: 60,
+        bufferBefore: 30,
         start: 'dyndatetime(y,m,d,8)',
         end: 'dyndatetime(y,m,d,12)',
-        title: 'Engine inspection',
+        title: 'Engine repair',
         color: '#6c5d45',
         taskType: 'material-search',
         resource: 3,
       },
       {
+        bufferAfter: 45,
+        bufferBefore: 30,
         start: 'dyndatetime(y,m,d,14)',
         end: 'dyndatetime(y,m,d,19)',
         title: 'Car painting',
@@ -116,6 +128,32 @@ function App() {
     [],
   );
 
+  const myBeforeBuffer = useCallback((args) => {
+    const event = args.original;
+    const color = event.color;
+
+    return (
+      <div className="md-buffer md-before-buffer" style={{ background: color }}>
+        Prep
+        <span className="md-buffer-time">{event.bufferBefore} min</span>
+        <div className="md-buffer-tail" style={{ background: color }}></div>
+      </div>
+    );
+  }, []);
+
+  const myAfterBuffer = useCallback((args) => {
+    const event = args.original;
+    const color = event.color;
+
+    return (
+      <div className="md-buffer md-after-buffer" style={{ background: color }}>
+        Inspection
+        <span className="md-buffer-time">{event.bufferAfter} min</span>
+        <div className="md-buffer-tail" style={{ background: color }}></div>
+      </div>
+    );
+  }, []);
+
   return (
     <Eventcalendar
       // drag
@@ -123,6 +161,8 @@ function App() {
       data={myEvents}
       resources={myResources}
       renderScheduleEvent={myScheduleEvent}
+      renderBufferBefore={myBeforeBuffer}
+      renderBufferAfter={myAfterBuffer}
       extendDefaultEvent={myDefaultEvent}
       cssClass="md-timeline-template"
     />

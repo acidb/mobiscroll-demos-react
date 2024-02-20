@@ -80,7 +80,7 @@ function App() {
       <div className="mds-full-height mbsc-flex">
         <div className="mds-search-sidebar mbsc-flex-col mbsc-flex-none">
           <Input startIcon="material-search" onChange={handleInputChange} inputStyle="outline" placeholder="Search events" />
-          {displayResults && <Eventcalendar view={listView} data={listEvents} showControls={false} onEventClick={handleEventClick} />}
+          {displayResults && <Eventcalendar data={listEvents} showControls={false} view={listView} onEventClick={handleEventClick} />}
         </div>
         <div className="mds-search-calendar mbsc-flex-1-1">
           <Eventcalendar
