@@ -206,8 +206,6 @@ function App() {
       },
     ];
 
-    console.log(monthColors);
-
     getJson(
       'https://trial.mobiscroll.com/getrentals/?year=' + now.getFullYear() + '&month=' + now.getMonth(),
       (data) => {
