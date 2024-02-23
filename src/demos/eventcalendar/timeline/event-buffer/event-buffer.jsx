@@ -35,8 +35,8 @@ function App() {
       {
         bufferAfter: 10,
         bufferBefore: 15,
-        start: 'y,m,d,8)',
-        end: 'y,m,d,10)',
+        start: 'dyndatetime(y,m,d,8)',
+        end: 'dyndatetime(y,m,d,10)',
         title: 'Product team mtg.',
         resource: 2,
       },

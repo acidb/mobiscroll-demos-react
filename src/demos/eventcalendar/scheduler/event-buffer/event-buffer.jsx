@@ -35,7 +35,7 @@ const myEvents = [
     bufferBefore: 15,
     color: '#76e083',
     start: 'dyndatetime(y,m,d-1,8)',
-    end: 'y,m,d-1,10)',
+    end: 'dyndatetime(y,m,d-1,10)',
     title: 'Product team mtg.',
   },
   {
