@@ -9,7 +9,7 @@ setOptions({
 function App() {
   const [myEvents, setEvents] = useState([]);
   const [isToastOpen, setToastOpen] = useState(false);
-  const [toastText, setToastText] = useState();
+  const [toastMessage, setToastMessage] = useState();
 
   const myView = useMemo(
     () => ({
@@ -18,12 +18,12 @@ function App() {
     [],
   );
 
-  const handleCloseToast = useCallback(() => {
+  const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
 
   const handleEventClick = useCallback((args) => {
-    setToastText(args.event.title);
+    setToastMessage(args.event.title);
     setToastOpen(true);
   }, []);
 
@@ -45,7 +45,7 @@ function App() {
         view={myView}
         onEventClick={handleEventClick}
       />
-      <Toast message={toastText} isOpen={isToastOpen} onClose={handleCloseToast} />
+      <Toast message={toastMessage} isOpen={isToastOpen} onClose={handleToastClose} />
     </>
   );
 }
