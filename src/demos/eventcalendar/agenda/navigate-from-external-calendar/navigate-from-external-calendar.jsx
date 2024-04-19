@@ -1,6 +1,6 @@
 import { Datepicker, Eventcalendar, getJson, setOptions } from '@mobiscroll/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import './external-navigation.css';
+import './navigate-from-external-calendar.css';
 
 setOptions({
   // localeJs,
