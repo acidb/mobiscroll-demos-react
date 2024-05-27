@@ -162,10 +162,9 @@ function App() {
 
   const updateEvent = useCallback(
     (updatedEvent) => {
-      // update the event in the list
+      // Update the event in the list
       const index = myEvents.findIndex((event) => event.id === updatedEvent.id);
       const newEventList = [...myEvents];
-
       newEventList.splice(index, 1, updatedEvent);
       setMyEvents(newEventList);
     },
@@ -184,7 +183,7 @@ function App() {
     if (isEdit) {
       updateEvent(newEvent);
     } else {
-      // add the new event to the list
+      // Add the new event to the list
       setMyEvents([...myEvents, newEvent]);
     }
     setPopupOpen(false);
@@ -192,33 +191,29 @@ function App() {
 
   const popupHeaderText = useMemo(() => (isEdit ? 'Edit event' : 'New Event'), [isEdit]);
 
-  const popupButtons = useMemo(() => {
-    if (isEdit) {
-      return [
-        'cancel',
-        {
-          handler: () => {
-            saveEvent();
-          },
-          keyCode: 'enter',
-          text: 'Save',
-          cssClass: 'mbsc-popup-button-primary',
-        },
-      ];
-    } else {
-      return [
-        'cancel',
-        {
-          handler: () => {
-            saveEvent();
-          },
-          keyCode: 'enter',
-          text: 'Add',
-          cssClass: 'mbsc-popup-button-primary',
-        },
-      ];
-    }
-  }, [isEdit, saveEvent]);
+  const popupButtons = useMemo(
+    () =>
+      isEdit
+        ? [
+            'cancel',
+            {
+              handler: saveEvent,
+              keyCode: 'enter',
+              text: 'Save',
+              cssClass: 'mbsc-popup-button-primary',
+            },
+          ]
+        : [
+            'cancel',
+            {
+              handler: saveEvent,
+              keyCode: 'enter',
+              text: 'Add',
+              cssClass: 'mbsc-popup-button-primary',
+            },
+          ],
+    [isEdit, saveEvent],
+  );
 
   const popupResponsive = useMemo(
     () => ({
@@ -245,10 +240,8 @@ function App() {
     (args) => {
       setEdit(false);
       setTempEvent(args.event);
-      // fill popup form with event data
       loadPopupForm(args.event);
       setPopupAnchor(args.target);
-      // open the popup
       setPopupOpen(true);
     },
     [loadPopupForm],
@@ -256,11 +249,11 @@ function App() {
 
   const handleEventClick = useCallback(
     (args) => {
-      if (isDraggingProgress.current) return;
-
+      if (isDraggingProgress.current) {
+        return;
+      }
       setEdit(true);
       setTempEvent({ ...args.event });
-      // fill popup form with event data
       loadPopupForm(args.event);
       setPopupAnchor(args.domEvent.target);
       setPopupOpen(true);
@@ -282,7 +275,7 @@ function App() {
 
   const handlePopupClose = useCallback(() => {
     if (!isEdit) {
-      // refresh the list, if add popup was canceled, to remove the temporary event
+      // Refresh the list, if add popup was canceled, to remove the temporary event
       setMyEvents([...myEvents]);
     }
     setPopupOpen(false);
@@ -299,7 +292,9 @@ function App() {
     (e) => {
       const progressArrow = e.target.closest('.mds-progress-arrow');
 
-      if (!progressArrow) return;
+      if (!progressArrow) {
+        return;
+      }
 
       e.stopPropagation();
 
@@ -332,7 +327,9 @@ function App() {
         eventToUpdate.progress = newProgress;
         updateEvent(eventToUpdate);
 
-        setTimeout(() => (isDraggingProgress.current = false), 100);
+        setTimeout(() => {
+          isDraggingProgress.current = false;
+        }, 100);
       };
 
       document.addEventListener('mousemove', handleMouseMove);
