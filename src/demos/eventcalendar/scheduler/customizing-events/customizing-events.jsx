@@ -60,9 +60,7 @@ function App() {
               </Button>
               <div className="md-cutom-event-img-cont">
                 {data.original.participants &&
-                  data.original.participants.map(function (p) {
-                    return <img key={p} className="md-custom-event-img" src={getParticipant(p).img} />;
-                  })}
+                  data.original.participants.map((p) => <img key={p} className="md-custom-event-img" src={getParticipant(p).img} />)}
               </div>
             </div>
           </div>

@@ -38,13 +38,7 @@ function App() {
     [],
   );
 
-  const calendarIds = useMemo(
-    () =>
-      calendars.map(function (cal) {
-        return cal.id;
-      }),
-    [calendars],
-  );
+  const calendarIds = useMemo(() => calendars.map((cal) => cal.id), [calendars]);
 
   const onError = useCallback((resp) => {
     setToastMessage(resp.error ? resp.error : resp.result.error.message);
@@ -54,8 +48,8 @@ function App() {
   const loadEvents = useCallback(() => {
     googleCalendarSync
       .getEvents(calendarIds, firstDay.current, lastDay.current)
-      .then(function (resp) {
-        resp.forEach(function (event) {
+      .then((resp) => {
+        resp.forEach((event) => {
           event.resource = event.googleCalendarId;
         });
         setEvents(resp);

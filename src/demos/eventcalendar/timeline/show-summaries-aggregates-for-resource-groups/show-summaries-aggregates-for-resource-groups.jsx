@@ -872,7 +872,7 @@ function App() {
     (dayEvents) => {
       const aggregateEvents = {};
 
-      myResources.forEach(function (resource) {
+      myResources.forEach((resource) => {
         for (let date = new Date(firstViewDay.current); date < lastViewDay.current; date.setDate(date.getDate() + 1)) {
           aggregateEvents[resource.id + +date] = {
             id: resource.id + +date,

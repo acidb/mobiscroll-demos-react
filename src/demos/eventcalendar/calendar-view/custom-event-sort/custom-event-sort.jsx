@@ -1,5 +1,5 @@
 import { Eventcalendar, setOptions /* localeImport */ } from '@mobiscroll/react';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 setOptions({
   // localeJs,
@@ -147,14 +147,11 @@ function App() {
 
   const myView = useMemo(() => ({ calendar: { type: 'week' } }), []);
 
-  const orderMyEvents = useCallback((event) => (event.accepted ? 1 : -1), []);
-
   return (
     <Eventcalendar
       // drag
       view={myView}
       data={myEvents}
-      eventOrder={orderMyEvents}
     />
   );
 }

@@ -441,7 +441,7 @@ const App = () => {
       }
 
       const newResources = [...newFixedResources];
-      resources.forEach(function (r) {
+      resources.forEach((r) => {
         if (!r.fixed) {
           newResources.push(r);
         }

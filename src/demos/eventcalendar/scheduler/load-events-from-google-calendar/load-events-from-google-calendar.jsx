@@ -41,7 +41,7 @@ function App() {
     setLoading(true);
     googleCalendarSync
       .getEvents(CALENDAR_ID, firstDay, lastDay)
-      .then(function (resp) {
+      .then((resp) => {
         setLoading(false);
         setEvents(resp);
       })

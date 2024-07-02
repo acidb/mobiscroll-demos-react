@@ -14,10 +14,7 @@ export default function myPlugin() {
 
 const now = new Date();
 
-const replaceDynamicDates = (src) =>
-  src.replace(/['|"]dyndatetime\(([^)])*\)['|"]/g, function (i) {
-    return parseDatestring(i);
-  });
+const replaceDynamicDates = (src) => src.replace(/['|"]dyndatetime\(([^)])*\)['|"]/g, (i) => parseDatestring(i));
 
 const parseDatestring = (s) => {
   s = s.replace(/dyndatetime/, '');
@@ -28,7 +25,7 @@ const parseDatestring = (s) => {
   s = s.replace(/d/, now.getDate());
   s = s.replace(/h/, now.getHours());
   s = s.replace(/i/, now.getMinutes());
-  s = s.replace(/['|"](.*)['|"]/, function (i) {
+  s = s.replace(/['|"](.*)['|"]/, (i) => {
     const dateDict = {
       0: 0,
       1: 0,

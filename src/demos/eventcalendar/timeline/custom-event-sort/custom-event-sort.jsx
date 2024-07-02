@@ -145,7 +145,7 @@ function App() {
     [],
   );
 
-  const myView = useMemo(() => ({ timeline: { type: 'week' } }), []);
+  const myView = useMemo(() => ({ timeline: { type: 'week', eventList: true, startDay: 1, endDay: 5 } }), []);
 
   return (
     <Eventcalendar
