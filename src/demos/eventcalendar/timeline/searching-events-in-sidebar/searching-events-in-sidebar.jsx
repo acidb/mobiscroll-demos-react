@@ -10,13 +10,13 @@ setOptions({
 function App() {
   const [calEvents, setCalEvents] = useState([]);
   const [listEvents, setListEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState([]);
   const [displayResults, setDisplayResults] = useState(false);
 
+  const calInst = useRef();
   const timer = useRef(null);
 
-  const calView = useMemo(() => ({ timeline: { type: 'week' } }), []);
+  const calView = useMemo(() => ({ timeline: { type: 'month', eventList: true } }), []);
   const listView = useMemo(() => ({ agenda: { type: 'year', size: 5 } }), []);
 
   const myResources = useMemo(
@@ -66,21 +66,25 @@ function App() {
     });
   }, []);
 
-  const handleSelectedDateChange = useCallback((args) => {
-    setSelectedDate(args.date);
-  }, []);
-
   const handleEventClick = useCallback((args) => {
-    setSelectedDate(args.event.start);
     setSelectedEvent([args.event]);
+    calInst.current.navigateToEvent(args.event);
   }, []);
 
   return (
     <Page className="mds-full-height">
       <div className="mds-full-height mbsc-flex">
         <div className="mds-search-sidebar mbsc-flex-col mbsc-flex-none">
-          <Input startIcon="material-search" onChange={handleInputChange} inputStyle="outline" placeholder="Search events" />
-          {displayResults && <Eventcalendar data={listEvents} showControls={false} view={listView} onEventClick={handleEventClick} />}
+          <Input
+            autoComplete="off"
+            startIcon="material-search"
+            onChange={handleInputChange}
+            inputStyle="outline"
+            placeholder="Search events"
+          />
+          {displayResults && (
+            <Eventcalendar data={listEvents} resources={myResources} showControls={false} view={listView} onEventClick={handleEventClick} />
+          )}
         </div>
         <div className="mds-search-calendar mbsc-flex-1-1">
           <Eventcalendar
@@ -89,13 +93,12 @@ function App() {
             dragToCreate={false}
             dragToMove={false}
             dragToResize={false}
+            ref={calInst}
             resources={myResources}
-            selectedDate={selectedDate}
             selectedEvents={selectedEvent}
             selectMultipleEvents={true}
             view={calView}
             onPageLoading={handlePageLoading}
-            onSelectedDateChange={handleSelectedDateChange}
           />
         </div>
       </div>

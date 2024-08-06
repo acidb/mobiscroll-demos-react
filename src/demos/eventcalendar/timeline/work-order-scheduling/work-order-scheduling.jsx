@@ -10,7 +10,7 @@ import {
   Snackbar,
   Textarea /* localeImport */,
 } from '@mobiscroll/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import './work-order-scheduling.css';
 
 setOptions({
@@ -272,9 +272,10 @@ function App() {
   const [popupEventBill, setBill] = useState(0);
   const [popupEventNotes, setNotes] = useState('');
   const [popupEventDate, setDate] = useState([]);
-  const [mySelectedDate, setSelectedDate] = useState(new Date());
   const [checkedResources, setCheckedResources] = useState([]);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+
+  const calInst = useRef();
 
   const snackbarButton = useMemo(
     () => ({
@@ -326,7 +327,7 @@ function App() {
       // here you can add the event to your storage as well
       // ...
     }
-    setSelectedDate(popupEventDate[0]);
+    calInst.current.navigateToEvent(newEvent);
     // close the popup
     setPopupOpen(false);
   }, [isEdit, myEvents, popupEventDate, popupEventNotes, popupEventTitle, popupEventLocation, popupEventBill, tempEvent, checkedResources]);
@@ -373,10 +374,6 @@ function App() {
     deleteEvent(tempEvent);
     setPopupOpen(false);
   }, [deleteEvent, tempEvent]);
-
-  const handleSelectedDateChange = useCallback((event) => {
-    setSelectedDate(event.date);
-  }, []);
 
   const handleEventClick = useCallback(
     (args) => {
@@ -498,14 +495,13 @@ function App() {
         className="md-work-order-scheduling"
         view={viewSettings}
         data={myEvents}
+        ref={calInst}
         resources={myResources}
         clickToCreate="double"
         dragToCreate={true}
         dragToMove={true}
         dragToResize={true}
         dragTimeStep={30}
-        selectedDate={mySelectedDate}
-        onSelectedDateChange={handleSelectedDateChange}
         onEventClick={handleEventClick}
         onEventCreated={handleEventCreated}
         onEventDeleted={handleEventDeleted}

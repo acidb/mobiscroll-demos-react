@@ -10,34 +10,31 @@ setOptions({
 function App() {
   const [calEvents, setCalEvents] = useState([]);
   const [listEvents, setListEvents] = useState([]);
-  const [mySelectedEvent, setSelectedEvent] = useState([]);
-  const [showList, setShowList] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState([]);
+  const [displayResults, setDisplayResults] = useState(false);
 
-  const timerRef = useRef(null);
+  const calInst = useRef();
+  const timer = useRef(null);
 
   const calView = useMemo(() => ({ calendar: { labels: true } }), []);
   const listView = useMemo(() => ({ agenda: { type: 'year', size: 5 } }), []);
 
   const handleInputChange = useCallback((ev) => {
-    const text = ev.target.value;
+    const searchText = ev.target.value;
 
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-
-    timerRef.current = setTimeout(() => {
-      if (text.length > 0) {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      if (searchText.length > 0) {
         getJson(
-          'https://trial.mobiscroll.com/searchevents/?text=' + text,
+          'https://trial.mobiscroll.com/searchevents/?text=' + searchText,
           (data) => {
             setListEvents(data);
-            setShowList(true);
+            setDisplayResults(true);
           },
           'jsonp',
         );
       } else {
-        setShowList(false);
+        setDisplayResults(true);
       }
     }, 200);
   }, []);
@@ -58,28 +55,34 @@ function App() {
   }, []);
 
   const handleEventClick = useCallback((args) => {
-    setCurrentDate(args.event.start);
     setSelectedEvent([args.event]);
+    calInst.current.navigateToEvent(args.event);
   }, []);
 
   return (
-    <Page>
-      <div className="md-search-events-sidebar mbsc-flex">
-        <div className="md-search-events-cont mbsc-flex-col mbsc-flex-none">
-          <Input startIcon="material-search" onChange={handleInputChange} inputStyle="outline" placeholder="Search events" />
-          {showList && <Eventcalendar view={listView} data={listEvents} showControls={false} onEventClick={handleEventClick} />}
+    <Page className="mds-full-height">
+      <div className="mds-full-height mbsc-flex">
+        <div className="mds-search-sidebar mbsc-flex-col mbsc-flex-none">
+          <Input
+            autoComplete="off"
+            startIcon="material-search"
+            onChange={handleInputChange}
+            inputStyle="outline"
+            placeholder="Search events"
+          />
+          {displayResults && <Eventcalendar data={listEvents} showControls={false} view={listView} onEventClick={handleEventClick} />}
         </div>
-        <div className="md-search-events-calendar mbsc-flex-1-1">
+        <div className="mds-search-calendar mbsc-flex-1-1">
           <Eventcalendar
             clickToCreate={false}
+            data={calEvents}
             dragToCreate={false}
             dragToMove={false}
             dragToResize={false}
+            ref={calInst}
+            selectedEvents={selectedEvent}
             selectMultipleEvents={true}
             view={calView}
-            data={calEvents}
-            selectedEvents={mySelectedEvent}
-            selectedDate={currentDate}
             onPageLoading={handlePageLoading}
           />
         </div>

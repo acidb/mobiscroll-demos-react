@@ -1,5 +1,5 @@
 import { Button, Eventcalendar, Page, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import './event-data-structure.css';
 
 setOptions({
@@ -19,15 +19,12 @@ function App() {
       color: '#35bb5a',
     },
   ]);
-  const [mySelectedDate, setSelectedDate] = useState();
+
+  const calInst = useRef();
 
   const myView = useMemo(() => ({ agenda: { type: 'month' } }), []);
 
-  const handleSelectedDateChange = useCallback((args) => {
-    setSelectedDate(args.date);
-  }, []);
-
-  const handleCloseToast = useCallback(() => {
+  const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
 
@@ -44,9 +41,10 @@ function App() {
       location: 'Office',
     };
 
-    setSelectedDate(new Date(2018, 11, 21));
     setEvents((myEvents) => [...myEvents, newEvent]);
     setToastOpen(true);
+
+    calInst.current.navigateToEvent(newEvent);
   }, []);
 
   return (
@@ -58,10 +56,10 @@ function App() {
           </Button>
         </div>
         <div className="mds-overflow-hidden mbsc-flex-1-1">
-          <Eventcalendar data={myEvents} view={myView} selectedDate={mySelectedDate} onSelectedDateChange={handleSelectedDateChange} />
+          <Eventcalendar data={myEvents} ref={calInst} view={myView} />
         </div>
       </div>
-      <Toast message="Event added" isOpen={isToastOpen} onClose={handleCloseToast} />
+      <Toast message="Event added" isOpen={isToastOpen} onClose={handleToastClose} />
     </Page>
   );
 }

@@ -20,47 +20,40 @@ setOptions({
 
 function App() {
   const [calEvents, setCalEvents] = useState([]);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [listEvents, setListEvents] = useState([]);
-  const [mySelectedEvent, setSelectedEvent] = useState([]);
-  const [isOpen, setOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
   const [searchInput, setSearchInput] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState([]);
 
-  const timerRef = useRef(null);
+  const calInst = useRef();
+  const timer = useRef(null);
 
   const calView = useMemo(() => ({ calendar: { labels: true } }), []);
   const listView = useMemo(() => ({ agenda: { type: 'year', size: 5 } }), []);
 
-  const searchInputRef = useCallback((input) => {
-    setSearchInput(input && input.nativeElement);
-  }, []);
-
   const handleInputChange = useCallback((ev) => {
-    const text = ev.target.value;
+    const searchText = ev.target.value;
 
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-
-    timerRef.current = setTimeout(() => {
-      if (text.length > 0) {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      if (searchText.length > 0) {
         getJson(
-          'https://trial.mobiscroll.com/searchevents/?text=' + text,
+          'https://trial.mobiscroll.com/searchevents/?text=' + searchText,
           (data) => {
             setListEvents(data);
-            setOpen(true);
+            setPopupOpen(true);
           },
           'jsonp',
         );
       } else {
-        setOpen(false);
+        setPopupOpen(false);
       }
     }, 200);
   }, []);
 
   const handleInputFocus = useCallback((ev) => {
     if (ev.target.value.length > 0) {
-      setOpen(true);
+      setPopupOpen(true);
     }
   }, []);
 
@@ -80,27 +73,32 @@ function App() {
   }, []);
 
   const handlePopupClose = useCallback(() => {
-    setOpen(false);
+    setPopupOpen(false);
   }, []);
 
   const handleEventClick = useCallback((args) => {
-    setCurrentDate(args.event.start);
     setSelectedEvent([args.event]);
-    setOpen(false);
+    setPopupOpen(false);
+    calInst.current.navigateToEvent(args.event);
   }, []);
 
-  const myHeader = useCallback(
+  const searchInputRef = useCallback((input) => {
+    setSearchInput(input && input.nativeElement);
+  }, []);
+
+  const customHeader = useCallback(
     () => (
       <>
         <CalendarNav />
-        <div className="md-seach-header-bar mbsc-flex-1-0">
+        <div className="mds-search-bar mbsc-flex-1-0">
           <Input
+            autoComplete="off"
+            inputStyle="box"
+            placeholder="Search events"
             startIcon="material-search"
             ref={searchInputRef}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
-            inputStyle="box"
-            placeholder="Search events"
           />
         </div>
         <CalendarPrev />
@@ -114,38 +112,37 @@ function App() {
   return (
     <>
       <Eventcalendar
-        className="md-search-events"
         clickToCreate={false}
         dragToCreate={false}
         dragToMove={false}
         dragToResize={false}
+        data={calEvents}
+        ref={calInst}
+        renderHeader={customHeader}
+        selectedEvents={selectedEvent}
         selectMultipleEvents={true}
         view={calView}
-        data={calEvents}
-        selectedEvents={mySelectedEvent}
-        selectedDate={currentDate}
-        renderHeader={myHeader}
         onPageLoading={handlePageLoading}
       />
       <Popup
-        className="md-search-popup"
-        display="anchored"
-        showArrow={false}
-        showOverlay={false}
-        scrollLock={false}
+        anchor={searchInput}
         contentPadding={false}
+        display="anchored"
+        focusElm={searchInput}
         focusOnOpen={false}
         focusOnClose={false}
-        anchor={searchInput}
-        focusElm={searchInput}
-        isOpen={isOpen}
+        isOpen={isPopupOpen}
+        scrollLock={false}
+        showArrow={false}
+        showOverlay={false}
+        width={400}
         onClose={handlePopupClose}
       >
         <Eventcalendar
-          className="mbsc-popover-list"
-          view={listView}
+          className="mds-search-results"
           data={listEvents}
           showControls={false}
+          view={listView}
           onEventClick={handleEventClick}
         />
       </Popup>

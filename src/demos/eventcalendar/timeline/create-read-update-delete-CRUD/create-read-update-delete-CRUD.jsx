@@ -126,13 +126,15 @@ function App() {
   const [popupTravelTime, setTravelTime] = useState(0);
   const [popupEventDate, setDate] = useState([]);
   const [popupEventStatus, setStatus] = useState('busy');
-  const [mySelectedDate, setSelectedDate] = useState(new Date());
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
   const [colorAnchor, setColorAnchor] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [tempColor, setTempColor] = useState('');
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+
+  const calInst = useRef();
   const colorPicker = useRef();
+
   const colorButtons = useMemo(
     () => [
       'cancel',
@@ -177,7 +179,7 @@ function App() {
       // here you can add the event to your storage as well
       // ...
     }
-    setSelectedDate(popupEventDate[0]);
+    calInst.current.navigateToEvent(newEvent);
     // close the popup
     setPopupOpen(false);
   }, [
@@ -210,8 +212,6 @@ function App() {
     setStatus(event.status || 'busy');
   }, []);
 
-  // handle popup form changes
-
   const titleChange = useCallback((ev) => {
     setTitle(ev.target.value);
   }, []);
@@ -240,12 +240,6 @@ function App() {
     deleteEvent(tempEvent);
     setPopupOpen(false);
   }, [deleteEvent, tempEvent]);
-
-  // scheduler options
-
-  const handleSelectedDateChange = useCallback((event) => {
-    setSelectedDate(event.date);
-  }, []);
 
   const handleEventClick = useCallback(
     (args) => {
@@ -286,7 +280,6 @@ function App() {
     // ...
   }, []);
 
-  // datepicker options
   const controls = useMemo(() => (popupEventAllDay ? ['date'] : ['datetime']), [popupEventAllDay]);
   const responsiveOptions = useMemo(
     () =>
@@ -306,7 +299,6 @@ function App() {
     [popupEventAllDay],
   );
 
-  // popup options
   const headerText = useMemo(() => (isEdit ? 'Edit event' : 'New Event'), [isEdit]);
   const popupButtons = useMemo(() => {
     if (isEdit) {
@@ -380,15 +372,14 @@ function App() {
   return (
     <div>
       <Eventcalendar
-        view={viewSettings}
-        data={myEvents}
-        resources={myResources}
-        clickToCreate="double"
+        clickToCreate={true}
         dragToCreate={true}
         dragToMove={true}
         dragToResize={true}
-        selectedDate={mySelectedDate}
-        onSelectedDateChange={handleSelectedDateChange}
+        data={myEvents}
+        ref={calInst}
+        resources={myResources}
+        view={viewSettings}
         onEventClick={handleEventClick}
         onEventCreated={handleEventCreated}
         onEventDeleted={handleEventDeleted}

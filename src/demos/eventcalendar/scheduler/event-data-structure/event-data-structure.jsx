@@ -1,5 +1,6 @@
-import { Button, Eventcalendar, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
-import { useCallback, useMemo, useState } from 'react';
+import { Button, Eventcalendar, Page, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import './event-data-structure.css';
 
 const now = new Date();
 
@@ -9,6 +10,7 @@ setOptions({
 });
 
 function App() {
+  const [isToastOpen, setToastOpen] = useState(false);
   const [myEvents, setEvents] = useState([
     {
       start: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13),
@@ -18,19 +20,11 @@ function App() {
     },
   ]);
 
-  const [mySelectedDate, setMySelectedDate] = useState();
-  const [isToastOpen, setToastOpen] = useState(false);
+  const calInst = useRef();
 
-  const myView = useMemo(
-    () => ({
-      schedule: {
-        type: 'day',
-      },
-    }),
-    [],
-  );
+  const myView = useMemo(() => ({ schedule: { type: 'day' } }), []);
 
-  const handleCloseToast = useCallback(() => {
+  const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
 
@@ -49,19 +43,26 @@ function App() {
       location: 'Office',
     };
 
-    setMySelectedDate(new Date(2018, 11, 21));
-    setEvents([...myEvents, newEvent]);
+    setEvents((myEvents) => [...myEvents, newEvent]);
     setToastOpen(true);
-  }, [myEvents]);
+
+    calInst.current.navigateToEvent(newEvent);
+  }, []);
 
   return (
-    <div>
-      <Eventcalendar data={myEvents} view={myView} selectedDate={mySelectedDate} />
-      <div className="mbsc-button-group-block">
-        <Button onClick={addEvent}>Add event to calendar</Button>
+    <Page className="mds-full-height">
+      <div className="mds-full-height mbsc-flex-col">
+        <div className="mbsc-flex-none">
+          <Button onClick={addEvent} startIcon="plus">
+            Add event to calendar
+          </Button>
+        </div>
+        <div className="mds-overflow-hidden mbsc-flex-1-1">
+          <Eventcalendar data={myEvents} ref={calInst} view={myView} />
+        </div>
       </div>
-      <Toast message="Event added" isOpen={isToastOpen} onClose={handleCloseToast} />
-    </div>
+      <Toast message="Event added" isOpen={isToastOpen} onClose={handleToastClose} />
+    </Page>
   );
 }
 

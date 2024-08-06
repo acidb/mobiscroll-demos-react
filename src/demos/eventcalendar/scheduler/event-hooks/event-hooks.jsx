@@ -120,6 +120,12 @@ function App() {
         onEventDragEnd={() => {
           // Logic for event drag end
         }}
+        onEventDragEnter={() => {
+          // Logic for event drag enter
+        }}
+        onEventDragLeave={() => {
+          // Logic for event drag leave
+        }}
         onEventHoverIn={() => {
           // Logic for event hover in
         }}

@@ -8,21 +8,9 @@ setOptions({
 });
 
 const doctors = [
-  {
-    id: 1,
-    name: 'Dr. Breanne Lorinda',
-    color: '#b33d3d',
-  },
-  {
-    id: 2,
-    name: 'Dr. Ryan Melicent',
-    color: '#309346',
-  },
-  {
-    id: 3,
-    name: 'Dr. Meredith Chantelle',
-    color: '#c77c0a',
-  },
+  { id: 1, name: 'Dr. Breanne Lorinda', color: '#b33d3d' },
+  { id: 2, name: 'Dr. Ryan Melicent', color: '#309346' },
+  { id: 3, name: 'Dr. Meredith Chantelle', color: '#c77c0a' },
 ];
 
 const defaultAppointments = [
@@ -450,22 +438,21 @@ const defaultAppointments = [
 
 function App() {
   const [appointments, setAppointments] = useState(defaultAppointments);
-  const [isOpen, setOpen] = useState(false);
-  const [anchor, setAnchor] = useState(null);
-  const [currentEvent, setCurrentEvent] = useState(null);
-  const [closeOnOverlay, setCloseOnOverlay] = useState(false);
-  const [info, setInfo] = useState('');
-  const [time, setTime] = useState('');
-  const [status, setStatus] = useState('');
-  const [reason, setReason] = useState('');
-  const [location, setLocation] = useState('');
+  const [appointment, setAppointment] = useState();
+  const [appointmentInfo, setAppointmentInfo] = useState('');
+  const [appointmentLocation, setAppointmentLocation] = useState('');
+  const [appointmentReason, setAppointmentReason] = useState('');
+  const [appointmentStatus, setAppointmentStatus] = useState('');
+  const [appointmentTime, setAppointmentTime] = useState('');
   const [buttonText, setButtonText] = useState('');
   const [buttonType, setButtonType] = useState('');
-  const [bgColor, setBgColor] = useState('');
+  const [isTooltipOpen, setTooltipOpen] = useState(false);
   const [isToastOpen, setToastOpen] = useState(false);
-  const [toastText, setToastText] = useState();
+  const [toastMessage, setToastMessage] = useState('');
+  const [tooltipAnchor, setTooltipAnchor] = useState(null);
+  const [tooltipColor, setTooltipColor] = useState('');
 
-  const timerRef = useRef(null);
+  const timer = useRef(null);
 
   const myView = useMemo(
     () => ({
@@ -481,156 +468,159 @@ function App() {
     [],
   );
 
-  const openTooltip = useCallback((args, closeOption) => {
+  const openTooltip = useCallback((args) => {
     const event = args.event;
-    const resource = doctors.find((dr) => dr.id === event.resource);
+    const doctor = doctors.find((dr) => dr.id === event.resource);
     const time = formatDate('hh:mm A', new Date(event.start)) + ' - ' + formatDate('hh:mm A', new Date(event.end));
 
-    setCurrentEvent(event);
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
 
     if (event.confirmed) {
-      setStatus('Confirmed');
+      setAppointmentStatus('Confirmed');
       setButtonText('Cancel appointment');
       setButtonType('warning');
     } else {
-      setStatus('Canceled');
+      setAppointmentStatus('Canceled');
       setButtonText('Confirm appointment');
       setButtonType('success');
     }
 
-    setBgColor(resource.color);
-    setInfo(event.title + ', Age: ' + event.age);
-    setTime(time);
-    setReason(event.reason);
-    setLocation(event.location);
+    setAppointment(event);
+    setAppointmentInfo(event.title + ', Age: ' + event.age);
+    setAppointmentLocation(event.location);
+    setAppointmentTime(time);
+    setAppointmentReason(event.reason);
+    setTooltipColor(doctor.color);
+    setTooltipAnchor(args.domEvent.target.closest('.mbsc-schedule-event'));
+    setTooltipOpen(true);
+  }, []);
 
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
+  const handleEventClick = useCallback(
+    (args) => {
+      openTooltip(args);
+    },
+    [openTooltip],
+  );
 
-    setAnchor(args.domEvent.currentTarget || args.domEvent.target);
-    setCloseOnOverlay(closeOption);
-    setOpen(true);
+  const handleEventDragStart = useCallback(() => {
+    setTooltipOpen(false);
   }, []);
 
   const handleEventHoverIn = useCallback(
     (args) => {
-      openTooltip(args, false);
+      openTooltip(args);
     },
     [openTooltip],
   );
 
   const handleEventHoverOut = useCallback(() => {
-    timerRef.current = setTimeout(() => {
-      setOpen(false);
-    }, 200);
+    if (!timer.current) {
+      timer.current = setTimeout(() => {
+        setTooltipOpen(false);
+      }, 200);
+    }
   }, []);
 
-  const handleEventClick = useCallback(
-    (args) => {
-      if (!isOpen) {
-        openTooltip(args, true);
-      }
-    },
-    [openTooltip, isOpen],
-  );
-
   const handleMouseEnter = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
     }
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    timerRef.current = setTimeout(() => {
-      setOpen(false);
+    timer.current = setTimeout(() => {
+      setTooltipOpen(false);
     }, 200);
+  }, []);
+
+  const handleTooltipClose = useCallback(() => {
+    setTooltipOpen(false);
   }, []);
 
   const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
 
-  const setStatusButton = useCallback(() => {
-    setOpen(false);
-    const index = appointments.findIndex((item) => item.id === currentEvent.id);
-    const newApp = [...appointments];
-    newApp[index].confirmed = !appointments[index].confirmed;
-    setAppointments(newApp);
-    showToast('Appointment ' + (currentEvent.confirmed ? 'confirmed' : 'canceled'));
-  }, [appointments, currentEvent, showToast]);
+  const updateAppointmentStatus = useCallback(() => {
+    appointment.confirmed = !appointment.confirmed;
+    setTooltipOpen(false);
+    setToastMessage('Appointment ' + (appointment.confirmed ? 'confirmed' : 'canceled'));
+    setToastOpen(true);
+  }, [appointment]);
 
-  const viewFile = useCallback(() => {
-    setOpen(false);
-    showToast('View file');
-  }, [showToast]);
-
-  const deleteApp = useCallback(() => {
-    setAppointments(appointments.filter((item) => item.id !== currentEvent.id));
-    setOpen(false);
-    showToast('Appointment deleted');
-  }, [appointments, currentEvent, showToast]);
-
-  const showToast = useCallback((message) => {
-    setToastText(message);
+  const viewAppointmentFile = useCallback(() => {
+    setTooltipOpen(false);
+    setToastMessage('View file');
     setToastOpen(true);
   }, []);
 
+  const deleteAppointment = useCallback(() => {
+    setAppointments(appointments.filter((item) => item.id !== appointment.id));
+    setTooltipOpen(false);
+    setToastMessage('Appointment deleted');
+    setToastOpen(true);
+  }, [appointments, appointment]);
+
   return (
-    <div>
+    <>
       <Eventcalendar
-        view={myView}
-        resources={doctors}
-        data={appointments}
         clickToCreate={false}
         dragToCreate={false}
         dragToMove={true}
         dragToResize={false}
+        data={appointments}
+        resources={doctors}
         showEventTooltip={false}
+        view={myView}
+        onEventClick={handleEventClick}
+        onEventDragStart={handleEventDragStart}
         onEventHoverIn={handleEventHoverIn}
         onEventHoverOut={handleEventHoverOut}
-        onEventClick={handleEventClick}
       />
       <Popup
-        display="anchored"
-        isOpen={isOpen}
-        anchor={anchor}
-        touchUi={false}
-        showOverlay={false}
+        anchor={tooltipAnchor}
         contentPadding={false}
-        closeOnOverlayClick={closeOnOverlay}
+        display="anchored"
+        isOpen={isTooltipOpen}
+        scrollLock={false}
+        showOverlay={false}
+        touchUi={false}
         width={350}
-        cssClass="md-tooltip"
+        onClose={handleTooltipClose}
       >
-        <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <div className="md-tooltip-header" style={{ backgroundColor: bgColor }}>
-            <span className="md-tooltip-name-age">{info}</span>
-            <span className="md-tooltip-time">{time}</span>
+        <div className="mds-tooltip" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <div className="mds-tooltip-header" style={{ backgroundColor: tooltipColor }}>
+            <span>{appointmentInfo}</span>
+            <span className="mbsc-pull-right">{appointmentTime}</span>
           </div>
-          <div className="md-tooltip-info">
-            <div className="md-tooltip-title">
-              Status: <span className="md-tooltip-status md-tooltip-text">{status}</span>
-              <Button color={buttonType} variant="outline" className="md-tooltip-status-button" onClick={setStatusButton}>
+          <div className="mbsc-padding">
+            <div className="mds-tooltip-label mbsc-margin">
+              Status: <span className="mbsc-light">{appointmentStatus}</span>
+              <Button color={buttonType} variant="outline" className="mds-tooltip-button mbsc-pull-right" onClick={updateAppointmentStatus}>
                 {buttonText}
               </Button>
             </div>
-            <div className="md-tooltip-title">
-              Reason for visit: <span className="md-tooltip-reason md-tooltip-text">{reason}</span>
+            <div className="mds-tooltip-label mbsc-margin">
+              Reason for visit: <span className="mbsc-light">{appointmentReason}</span>
             </div>
-            <div className="md-tooltip-title">
-              Location: <span className="md-tooltip-location md-tooltip-text">{location}</span>
+            <div className="mds-tooltip-label mbsc-margin">
+              Location: <span className="mbsc-light">{appointmentLocation}</span>
             </div>
-            <Button color="secondary" className="md-tooltip-view-button" onClick={viewFile}>
+            <Button color="secondary" className="mds-tooltip-button" onClick={viewAppointmentFile}>
               View patient file
             </Button>
-            <Button color="danger" variant="outline" className="md-tooltip-delete-button" onClick={deleteApp}>
+            <Button color="danger" variant="outline" className="mds-tooltip-button mbsc-pull-right" onClick={deleteAppointment}>
               Delete appointment
             </Button>
           </div>
         </div>
       </Popup>
-      <Toast message={toastText} isOpen={isToastOpen} onClose={handleToastClose} />
-    </div>
+      <Toast isOpen={isToastOpen} message={toastMessage} onClose={handleToastClose} />
+    </>
   );
 }
 
