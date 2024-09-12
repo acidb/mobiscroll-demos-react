@@ -1,0 +1,27 @@
+.mds-custom-header-nav {
+  width: 180px;
+}
+
+.mds-custom-header-button.mbsc-button {
+  font-size: 20px;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.mds-custom-header-switch .mbsc-segmented {
+  width: 110px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.mds-custom-header-switch .mbsc-segmented.mbsc-material,
+.mds-custom-header-switch .mbsc-segmented.mbsc-windows {
+  padding: 0;
+}
+
+.mds-custom-header-switch .mbsc-segmented-button.mbsc-button {
+  font-size: 20px;
+  height: 32px;
+  padding: 0;
+}

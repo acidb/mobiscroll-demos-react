@@ -162,7 +162,7 @@ function App() {
   const handleEventCreated = useCallback(
     (args) => {
       const event = args.event;
-      const resource = types.find((obj) => obj.id === event.resource);
+      const resource = args.resourceObj;
       setHeader(
         '<div>' + resource.name + '</div><div class="md-meal-type">' + formatDate('DDDD, DD MMMM YYYY', new Date(event.start)) + '</div>',
       );

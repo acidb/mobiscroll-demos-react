@@ -414,8 +414,8 @@ function App() {
   const handleEventClick = useCallback(
     (args) => {
       const event = args.event;
-      const resource = staff.find((r) => r.id === event.resource);
-      const slot = mySlots.find((s) => s.id === event.slot);
+      const resource = args.resourceObj;
+      const slot = args.slotObj;
 
       fillPopup(event, true);
       setPopupHeader(
@@ -431,13 +431,13 @@ function App() {
       );
       setPopupOpen(true);
     },
-    [fillPopup, mySlots, staff],
+    [fillPopup],
   );
 
   const handleEventCreated = useCallback(
     (args) => {
       const event = args.event;
-      const slot = mySlots.find((s) => s.id === event.slot);
+      const slot = args.slotObj;
 
       fillPopup(event, false);
       setPopupHeader(
@@ -451,7 +451,7 @@ function App() {
       );
       setPopupOpen(true);
     },
-    [fillPopup, mySlots],
+    [fillPopup],
   );
 
   const handleEventCreateFailed = useCallback(() => {

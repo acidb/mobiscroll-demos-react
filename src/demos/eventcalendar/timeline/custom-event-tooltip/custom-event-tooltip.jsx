@@ -469,7 +469,7 @@ function App() {
 
   const openTooltip = useCallback((args) => {
     const event = args.event;
-    const doctor = doctors.find((dr) => dr.id === event.resource);
+    const doctor = args.resourceObj;
     const time = formatDate('hh:mm A', new Date(event.start)) + ' - ' + formatDate('hh:mm A', new Date(event.end));
 
     if (timer.current) {

@@ -245,7 +245,7 @@ function App() {
     (args) => {
       setEdit(true);
       setTempEvent({ ...args.event });
-      setSelectedColor(args.event.color || myResources.find((r) => r.id === args.event.resource).color);
+      setSelectedColor(args.event.color || args.resourceObj.color);
       // fill popup form with event data
       loadPopupForm(args.event);
       setAnchor(args.domEvent.target);
@@ -258,7 +258,7 @@ function App() {
     (args) => {
       setEdit(false);
       setTempEvent(args.event);
-      setSelectedColor(myResources.find((r) => r.id === args.event.resource).color);
+      setSelectedColor(args.resourceObj.color);
       // fill popup form with event data
       loadPopupForm(args.event);
       setAnchor(args.target);

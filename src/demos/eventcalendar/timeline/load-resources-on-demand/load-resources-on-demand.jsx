@@ -148,25 +148,9 @@ function App() {
     [],
   );
 
-  const getResourceById = useCallback((resources, resourceId) => {
-    for (let i = 0; i < resources.length; i++) {
-      const resource = resources[i];
-      if (resource.id === resourceId) {
-        return resource;
-      } else {
-        if (resource.children) {
-          const child = getResourceById(resource.children, resourceId);
-          if (child) {
-            return child;
-          }
-        }
-      }
-    }
-  }, []);
-
   const loadChildResources = useCallback(
     (args) => {
-      const resource = getResourceById(myResources, args.resource);
+      const resource = args.resourceObj;
 
       if (!resource.loaded) {
         getJson(
@@ -185,7 +169,7 @@ function App() {
         );
       }
     },
-    [getResourceById, myEvents, myResources, setToastOpen],
+    [myEvents, myResources, setToastOpen],
   );
 
   const handleCloseToast = useCallback(() => {
