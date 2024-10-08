@@ -660,7 +660,7 @@ function App() {
     let eventOccurrence = 'none';
 
     if (events) {
-      var eventNr = events.length;
+      const eventNr = events.length;
       if (eventNr === 0) {
         eventOccurrence = 'none';
       } else if (eventNr === 1) {
@@ -680,8 +680,8 @@ function App() {
       let occuppancy = 0;
 
       if (events) {
-        var resourceIds = [];
-        var nr = 0;
+        let resourceIds = [];
+        let nr = 0;
         for (const event of events) {
           if (resourceIds.indexOf(event.resource) < 0) {
             nr++;

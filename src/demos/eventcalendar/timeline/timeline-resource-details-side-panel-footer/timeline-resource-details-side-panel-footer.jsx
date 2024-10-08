@@ -138,8 +138,8 @@ function App() {
       const events = data.events;
       let occuppancy = 0;
       if (events) {
-        var resourceIds = [];
-        var nr = 0;
+        let resourceIds = [];
+        let nr = 0;
         for (const event of myEvents) {
           if (resourceIds.indexOf(event.resource) < 0) {
             nr++;

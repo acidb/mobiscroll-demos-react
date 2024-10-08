@@ -140,7 +140,7 @@ function App() {
     const colors = [];
     const invalid = [];
 
-    for (var j = 0; j < myResources.length; ++j) {
+    for (let j = 0; j < myResources.length; ++j) {
       const resource = myResources[j];
 
       for (let i = 0; i < 24; ++i) {

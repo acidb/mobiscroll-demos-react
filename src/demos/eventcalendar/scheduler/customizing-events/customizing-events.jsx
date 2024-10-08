@@ -70,7 +70,7 @@ function App() {
   }, []);
 
   const myBeforeBuffer = useCallback((args) => {
-    var cat = getCategory(args.original.category);
+    const cat = getCategory(args.original.category);
 
     return (
       <div className="md-schedule-buffer md-schedule-before-buffer">
