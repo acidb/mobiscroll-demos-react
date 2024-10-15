@@ -71,6 +71,18 @@ function App() {
     setSelectedDateMoment(moment([2020, 4, 21]));
   }, []);
 
+  const handleSelectedDateObjChange = useCallback((args) => {
+    setSelectedDateObj(args.date);
+  }, []);
+
+  const handleSelectedDateISOChange = useCallback((args) => {
+    setSelectedDateISO(args.date);
+  }, []);
+
+  const handleSelectedDateMomentChange = useCallback((args) => {
+    setSelectedDateMoment(args.date);
+  }, []);
+
   return (
     <Page>
       <div className="mbsc-grid">
@@ -85,7 +97,12 @@ function App() {
                   end: new Date(2020, 4, 19, 11, 45)
                 </Button>
               </div>
-              <Eventcalendar data={dateObjEvents} view={myView} selectedDate={selectedDateObj} />
+              <Eventcalendar
+                data={dateObjEvents}
+                view={myView}
+                selectedDate={selectedDateObj}
+                onSelectedDateChange={handleSelectedDateObjChange}
+              />
             </div>
           </div>
           <div className="mbsc-col-sm-12 mbsc-col-md-4">
@@ -98,7 +115,12 @@ function App() {
                   end: &apos;2020-05-20T13:00:00&apos;
                 </Button>
               </div>
-              <Eventcalendar data={dateISOEvents} view={myView} selectedDate={selectedDateISO} />
+              <Eventcalendar
+                data={dateISOEvents}
+                view={myView}
+                selectedDate={selectedDateISO}
+                onSelectedDateChange={handleSelectedDateISOChange}
+              />
             </div>
           </div>
           <div className="mbsc-col-sm-12 mbsc-col-md-4">
@@ -111,7 +133,12 @@ function App() {
                   end: moment([2020, 4, 21, 14])
                 </Button>
               </div>
-              <Eventcalendar data={dateMomentEvents} view={myView} selectedDate={selectedDateMoment} />
+              <Eventcalendar
+                data={dateMomentEvents}
+                view={myView}
+                selectedDate={selectedDateMoment}
+                onSelectedDateChange={handleSelectedDateMomentChange}
+              />
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { Button, Eventcalendar, formatDate, getJson, setOptions /* localeImport */ } from '@mobiscroll/react';
+import { Button, Eventcalendar, formatDate, getJson, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './customizing-day-header.css';
 
@@ -9,6 +9,7 @@ setOptions({
 
 function App() {
   const [myEvents, setEvents] = useState([]);
+  const [isToastOpen, setToastOpen] = useState(false);
 
   const myView = useMemo(
     () => ({
@@ -28,9 +29,14 @@ function App() {
       };
 
       setEvents([...myEvents, newEvent]);
+      setToastOpen(true);
     },
     [myEvents],
   );
+
+  const handleToastClose = useCallback(() => {
+    setToastOpen(false);
+  }, []);
 
   const renderCustomDay = useCallback(
     (day) => (
@@ -56,7 +62,12 @@ function App() {
     );
   }, []);
 
-  return <Eventcalendar className="mds-custom-day-header" view={myView} data={myEvents} renderDay={renderCustomDay} />;
+  return (
+    <>
+      <Eventcalendar className="mds-custom-day-header" view={myView} data={myEvents} renderDay={renderCustomDay} />;
+      <Toast message="Event added" isOpen={isToastOpen} onClose={handleToastClose} />
+    </>
+  );
 }
 
 export default App;

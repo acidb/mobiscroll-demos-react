@@ -10,7 +10,7 @@ setOptions({
 function App() {
   const [myEvents, setEvents] = useState([]);
   const [isToastOpen, setToastOpen] = useState(false);
-  const [toastText, setToastText] = useState();
+  const [toastMessage, setToastMessage] = useState();
 
   const myParticipants = useMemo(
     () => ({
@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   const add = useCallback((data) => {
-    setToastText(data.title + ' clicked');
+    setToastMessage(data.title + ' clicked');
     setToastOpen(true);
   }, []);
 
@@ -67,7 +67,7 @@ function App() {
   return (
     <>
       <Eventcalendar renderEventContent={customEventContent} data={myEvents} view={myView} />
-      <Toast message={toastText} isOpen={isToastOpen} onClose={handleCloseToast} />
+      <Toast message={toastMessage} isOpen={isToastOpen} onClose={handleCloseToast} />
     </>
   );
 }

@@ -176,7 +176,7 @@ function App() {
       setPopupOpen(false);
     };
 
-    // init google client
+    // Init Google client
     googleCalendarSync.init({
       apiKey: '<YOUR_GOOGLE_API_KEY>',
       clientId: '<YOUR_GOOGLE_CLIENT_ID>',

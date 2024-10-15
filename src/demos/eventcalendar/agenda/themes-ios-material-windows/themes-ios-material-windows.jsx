@@ -60,7 +60,7 @@ function App() {
           </div>
         </div>
         <div className="mds-overflow-hidden mbsc-flex-1-1">
-          <Eventcalendar data={myEvents} view={myView} theme={myTheme} themeVariant={myThemeVariant} />
+          <Eventcalendar data={myEvents} theme={myTheme} themeVariant={myThemeVariant} view={myView} />
         </div>
       </div>
     </Page>

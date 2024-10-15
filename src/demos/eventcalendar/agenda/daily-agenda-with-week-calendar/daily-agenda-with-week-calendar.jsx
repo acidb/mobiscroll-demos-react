@@ -11,6 +11,14 @@ function App() {
   const [isToastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  const myView = useMemo(
+    () => ({
+      calendar: { type: 'week' },
+      agenda: { type: 'day' },
+    }),
+    [],
+  );
+
   const handleCloseToast = useCallback(() => {
     setToastOpen(false);
   }, []);
@@ -19,14 +27,6 @@ function App() {
     setToastMessage(args.event.title);
     setToastOpen(true);
   }, []);
-
-  const myView = useMemo(
-    () => ({
-      calendar: { type: 'week' },
-      agenda: { type: 'day' },
-    }),
-    [],
-  );
 
   useEffect(() => {
     getJson(

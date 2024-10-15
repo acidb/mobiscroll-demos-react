@@ -17,9 +17,9 @@ setOptions({
 });
 
 function App() {
+  const [myEvents, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState('agenda');
-  const [myEvents, setEvents] = useState([]);
   const [myView, setView] = useState({ agenda: { type: 'month' } });
 
   const handleSelectedDateChange = useCallback((args) => {
@@ -59,7 +59,7 @@ function App() {
         <CalendarNav className="mds-custom-header-nav" />
         <div className="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-center">
           <Button onClick={prevPage} icon="material-arrow-back" variant="flat" className="mds-custom-header-button"></Button>
-          <CalendarToday className="md-custom-header-today" />
+          <CalendarToday />
           <Button onClick={nextPage} icon="material-arrow-forward" variant="flat" className="mds-custom-header-button"></Button>
         </div>
         <div className="mds-custom-header-switch">

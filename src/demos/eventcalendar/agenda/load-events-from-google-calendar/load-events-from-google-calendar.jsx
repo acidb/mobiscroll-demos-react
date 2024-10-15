@@ -58,7 +58,7 @@ function App() {
     switch (event.target.value) {
       case 'month':
         view = {
-          calendar: { labels: true },
+          calendar: { type: 'month' },
         };
         break;
       case 'week':
