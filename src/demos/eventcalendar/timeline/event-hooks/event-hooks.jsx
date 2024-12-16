@@ -41,6 +41,7 @@ function App() {
     () => ({
       timeline: {
         type: 'day',
+        resourceReorder: true,
       },
     }),
     [],
@@ -186,6 +187,9 @@ function App() {
         }}
         onPageLoading={() => {
           // Use it to load data on demand
+        }}
+        onResourceOrderUpdate={() => {
+          // Logic for resource update
         }}
         onSelectedDateChange={() => {
           // Use it to keep track of the selected date externally

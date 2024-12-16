@@ -220,7 +220,7 @@ function App() {
   const handleEventDelete = useCallback((args) => {
     if (googleCalendarSync.isSignedIn()) {
       setConfirmEvent(args.event);
-      setUpdateConfirmOpen(true);
+      setDeleteConfirmOpen(true);
     }
     return false;
   }, []);

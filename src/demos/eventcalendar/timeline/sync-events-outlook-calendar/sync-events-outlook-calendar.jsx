@@ -216,7 +216,7 @@ function App() {
   const handleEventDelete = useCallback((args) => {
     if (outlookCalendarSync.isSignedIn()) {
       setConfirmEvent(args.event);
-      setUpdateConfirmOpen(true);
+      setDeleteConfirmOpen(true);
     }
     return false;
   }, []);
