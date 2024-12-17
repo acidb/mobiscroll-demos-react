@@ -146,11 +146,11 @@ function App() {
         onEventDoubleClick={() => {
           // Logic for event double click
         }}
-        onEventDragStart={() => {
-          // Logic for event drag start
+        onResourceDragStart={() => {
+          /* Logic for resource drag start */
         }}
-        onEventDragEnd={() => {
-          // Logic for event drag end
+        onResourceDragEnd={() => {
+          /* Logic for resource drag end */
         }}
         onEventDragEnter={() => {
           // Logic for event drag enter

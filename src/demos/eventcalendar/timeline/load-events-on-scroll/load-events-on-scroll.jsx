@@ -1,4 +1,4 @@
-import { Eventcalendar, formatDate, getJson, setOptions /* localeImport */ } from '@mobiscroll/react';
+import { Eventcalendar, formatDate, getJson, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
 import { useCallback, useMemo, useState } from 'react';
 import './load-events-on-scroll.css';
 
@@ -9,6 +9,10 @@ setOptions({
 
 function App() {
   const [myEvents, setEvents] = useState([]);
+  const [isToastOpen, setToastOpen] = useState(false);
+  const handleToastClose = useCallback(() => {
+    setToastOpen(false);
+  }, []);
 
   const myView = useMemo(
     () => ({
@@ -56,22 +60,26 @@ function App() {
     const end = formatDate('YYYY-MM-DD', args.viewEnd);
 
     getJson(
-      'https://trialdev.mobiscroll.com/load-data-scroll/?start=' + start + '&end=' + end,
+      'https://trial.mobiscroll.com/load-data-scroll/?start=' + start + '&end=' + end,
       (data) => {
         setEvents(data.events);
+        setToastOpen(true);
       },
       'jsonp',
     );
   }, []);
 
   return (
-    <Eventcalendar
-      // drag
-      view={myView}
-      data={myEvents}
-      resources={myResources}
-      onVirtualLoading={handleVirtualLoading}
-    />
+    <>
+      <Eventcalendar
+        // drag
+        view={myView}
+        data={myEvents}
+        resources={myResources}
+        onVirtualLoading={handleVirtualLoading}
+      />
+      <Toast message="Loading events..." duration={1000} isOpen={isToastOpen} onClose={handleToastClose} />
+    </>
   );
 }
 

@@ -64,7 +64,7 @@ function App() {
       }
 
       getJson(
-        'https://trialdev.mobiscroll.com/load-data-scroll/?start=' +
+        'https://trial.mobiscroll.com/load-data-scroll/?start=' +
           start +
           '&end=' +
           end +
