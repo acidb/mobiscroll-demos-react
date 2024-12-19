@@ -199,8 +199,8 @@ function App() {
   const customHeader = useCallback(
     () => (
       <>
-        <CalendarNav className="mds-header-filter-nav" />
-        <div className="mds-header-filter mbsc-flex mbsc-flex-1-1">
+        <CalendarNav />
+        <div className="mds-reorder-header-filter mbsc-flex mbsc-flex-1-1">
           {!isReorder && (
             <Button className="mds-reorder-switch mds-enable" variant="flat" onClick={enableReorder}>
               Reorder resources
@@ -216,7 +216,7 @@ function App() {
               </Button>
             </>
           )}
-          <div className="mds-header-filter-separator"></div>
+          <Button className="mds-reorder-header-filter-separator" variant="outline" color="light"></Button>
         </div>
         <CalendarPrev />
         <CalendarToday />

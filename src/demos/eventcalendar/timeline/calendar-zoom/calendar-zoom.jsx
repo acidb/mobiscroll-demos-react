@@ -103,7 +103,7 @@ function App() {
 
   useEffect(() => {
     getJson(
-      'https://trial.mobiscroll.com/timeline-events/',
+      'https://trial.mobiscroll.com/timeline-zoom-events/',
       (events) => {
         setEvents(events);
       },

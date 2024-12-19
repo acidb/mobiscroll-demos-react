@@ -216,7 +216,7 @@ function App() {
     [getSortArrow, sortResources],
   );
 
-  const myCustomSidebar = useCallback((resource) => <div className="mds-resource-cell">{'$' + resource.revenue}</div>, []);
+  const myCustomSidebar = useCallback((resource) => <div className="mds-sidebar-cell">{'$' + resource.revenue}</div>, []);
 
   const myCustomSidebarFooter = useCallback(
     () => <div className="mds-resource-details-footer mds-resource-details-total">{'$' + totalRevenue}</div>,
