@@ -1087,7 +1087,7 @@ function App() {
                 <div className="md-recurrence-options">
                   <span>Repeat every</span>
                   <span className="md-recurrence-input md-recurrence-input-nr">
-                    <Input min="1" value={repeatNr} onChange={repeatNrChange} inputStyle="outline" />
+                    <Input min={1} value={repeatNr} onChange={repeatNrChange} inputStyle="outline" />
                   </span>
                   {repeatType === 'daily' && <span>days</span>}
                   {repeatType === 'weekly' && <span>weeks</span>}

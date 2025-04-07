@@ -82,7 +82,6 @@
 .mds-popup-sort-snackbar .mbsc-snackbar-cont::before {
   content: '';
   position: absolute;
-  z-index: -1;
   left: 0;
   height: 100%;
   width: 100%;
@@ -92,6 +91,8 @@
 
 .mds-popup-sort-snackbar .mbsc-snackbar-message::after {
   content: 'Sorting in 1 .';
+  position: relative;
+  z-index: 1;
   animation: mds-popup-sort-message 3s steps(3) forwards;
 }
 

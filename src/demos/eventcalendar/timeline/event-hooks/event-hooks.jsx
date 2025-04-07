@@ -146,12 +146,6 @@ function App() {
         onEventDoubleClick={() => {
           // Logic for event double click
         }}
-        onResourceDragStart={() => {
-          /* Logic for resource drag start */
-        }}
-        onResourceDragEnd={() => {
-          /* Logic for resource drag end */
-        }}
         onEventDragEnter={() => {
           // Logic for event drag enter
         }}
@@ -188,8 +182,23 @@ function App() {
         onPageLoading={() => {
           // Use it to load data on demand
         }}
+        onResourceClick={() => {
+          // Logic for resource click
+        }}
+        onResourceDoubleClick={() => {
+          // Logic for resource double click
+        }}
+        onResourceDragEnd={() => {
+          /* Logic for resource drag end */
+        }}
+        onResourceDragStart={() => {
+          /* Logic for resource drag start */
+        }}
         onResourceOrderUpdate={() => {
           // Logic for resource update
+        }}
+        onResourceRightClick={() => {
+          // Logic for resource right click
         }}
         onSelectedDateChange={() => {
           // Use it to keep track of the selected date externally

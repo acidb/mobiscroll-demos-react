@@ -146,7 +146,7 @@ function App() {
     {
       start: 'dyndatetime(y,m,d-4)',
       end: 'dyndatetime(y,m,d-1)',
-      title: 'Tour #028 - ? to Philadelphiax',
+      title: 'Tour #028 - Trenton to Philadelphia',
       resource: 9,
       color: '#33FF57',
       payload: 11,
@@ -298,7 +298,7 @@ function App() {
   }, [myResources]);
 
   const sortResources = useCallback(() => {
-    metricBarAnimation.current = false;
+    metricBarAnimation.current = true;
     const updatedResources = [...myResources].sort((resource1, resource2) => {
       let col = sortColumn.current;
       if (resource1[col] === resource2[col]) {
@@ -324,6 +324,7 @@ function App() {
       {
         text: 'Apply',
         keyCode: 'enter',
+        cssClass: 'mbsc-popup-button-primary',
         handler: function () {
           setPopupOpen(false);
           setToastOpen(true);
@@ -331,7 +332,6 @@ function App() {
           sortDirection.current = tempSortDirection;
           sortResources();
         },
-        cssClass: 'mbsc-popup-button-primary',
       },
     ],
     [sortResources, tempSortColumn, tempSortDirection],
@@ -510,9 +510,9 @@ function App() {
         eventOverlap={false}
         resources={sortedResources}
         view={myView}
+        renderHeader={myCustomHeader}
         renderResourceHeader={myCustomResourceHeader}
         renderResource={myCustomResource}
-        renderHeader={myCustomHeader}
         renderScheduleEventContent={myScheduleEvent}
         onPageLoading={handlePageLoading}
         onEventCreated={handleEventCreated}
@@ -557,7 +557,7 @@ function App() {
         isOpen={isSnackbarOpen}
         onClose={handleSnackbarClose}
       />
-      <Toast message="Resouces sorted" isOpen={isToastOpen} onClose={handleToastClose} />
+      <Toast message="Resources sorted" isOpen={isToastOpen} onClose={handleToastClose} />
     </>
   );
 }

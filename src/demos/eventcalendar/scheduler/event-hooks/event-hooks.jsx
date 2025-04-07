@@ -12,6 +12,27 @@ function App() {
   const [draggable1, setDraggable1] = useState();
   const [draggable2, setDraggable2] = useState();
 
+  const myResources = useMemo(
+    () => [
+      {
+        id: 1,
+        name: 'Ryan',
+        color: '#f7c4b4',
+      },
+      {
+        id: 2,
+        name: 'Kate',
+        color: '#c6f1c9',
+      },
+      {
+        id: 3,
+        name: 'John',
+        color: '#e8d0ef',
+      },
+    ],
+    [],
+  );
+
   const invalid = useMemo(
     () => [
       {
@@ -54,7 +75,7 @@ function App() {
 
   useEffect(() => {
     getJson(
-      'https://trial.mobiscroll.com/events/?vers=5',
+      'https://trial.mobiscroll.com/resource-events/',
       (events) => {
         setEvents(events);
       },
@@ -79,6 +100,7 @@ function App() {
         dragToCreate={true}
         dragToMove={true}
         dragToResize={true}
+        resources={myResources}
         view={myView}
         invalid={invalid}
         onCellClick={() => {
@@ -155,6 +177,15 @@ function App() {
         }}
         onPageLoading={() => {
           // Use it to load data on demand
+        }}
+        onResourceClick={() => {
+          // Logic for resource click
+        }}
+        onResourceDoubleClick={() => {
+          // Logic for resource double click
+        }}
+        onResourceRightClick={() => {
+          // Logic for resource right click
         }}
         onSelectedDateChange={() => {
           // Use it to keep track of the selected date externally

@@ -38,7 +38,7 @@ function App() {
       { name: 'Polski', value: 'pl' },
       { name: 'Português Brasileiro', value: 'pt-BR' },
       { name: 'Português Europeu', value: 'pt-PT' },
-      { name: 'Roman', value: 'ro' },
+      { name: 'Română', value: 'ro' },
       { name: 'Russian UA', value: 'ru-UA' },
       { name: 'Russian', value: 'ru' },
       { name: 'Slovencina', value: 'sk' },
@@ -77,7 +77,7 @@ function App() {
 
   return (
     <Page className="mds-full-height">
-      <div className="mds-agenda-locale-cont mds-full-height mbsc-flex-col">
+      <div className="mds-locale-cont mds-full-height mbsc-flex-col">
         <div className="mbsc-grid">
           <div className="mbsc-row">
             <div className="mbsc-col-sm-8">
