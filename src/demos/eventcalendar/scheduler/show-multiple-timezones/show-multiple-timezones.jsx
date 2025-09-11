@@ -1,14 +1,17 @@
-import { Eventcalendar, momentTimezone, setOptions /* localeImport */ } from '@mobiscroll/react';
-import moment from 'moment-timezone';
+import { dayjsTimezone, Eventcalendar, setOptions /* localeImport */ } from '@mobiscroll/react';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useMemo } from 'react';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjsTimezone.dayjs = dayjs;
 
 setOptions({
   // localeJs,
   // themeJs
 });
-
-// setup Mobiscroll Timezone plugin with Moment
-momentTimezone.moment = moment;
 
 function App() {
   const myEvents = useMemo(
@@ -87,7 +90,7 @@ function App() {
       // drag
       dataTimezone="utc"
       displayTimezone="America/New_York"
-      timezonePlugin={momentTimezone}
+      timezonePlugin={dayjsTimezone}
       data={myEvents}
       view={myView}
     />

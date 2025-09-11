@@ -4,20 +4,21 @@ import {
   CalendarPrev,
   CalendarToday,
   Confirm,
+  dayjsTimezone,
   Eventcalendar,
   formatDate,
-  momentTimezone,
   setOptions,
   Toast /* localeImport */,
 } from '@mobiscroll/react';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useCallback, useMemo, useState } from 'react';
 import './timezone-meeting-planner.css';
 
-// eslint-disable-next-line import/order
-import moment from 'moment-timezone';
-
-// setup Mobiscroll Timezone plugin with Moment
-momentTimezone.moment = moment;
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjsTimezone.dayjs = dayjs;
 
 setOptions({
   // localeJs,
@@ -312,7 +313,7 @@ function App() {
   return (
     <>
       <Eventcalendar
-        timezonePlugin={momentTimezone}
+        timezonePlugin={dayjsTimezone}
         dataTimezone="utc"
         displayTimezone="utc"
         clickToCreate={true}

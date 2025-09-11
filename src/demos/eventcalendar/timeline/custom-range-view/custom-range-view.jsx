@@ -77,13 +77,13 @@ function App() {
     };
   }, [buttonText]);
 
-  // returns the number of days between two dates
+  // Returns the number of days between two dates
   const getNrDays = useCallback(
     (start, end) => Math.round(Math.abs((end.setHours(0) - start.setHours(0)) / (24 * 60 * 60 * 1000))) + 1,
     [],
   );
 
-  // returns the formatted date
+  // Returns the formatted date
   const getFormattedRange = useCallback(
     (start, end) =>
       formatDate('MMM D, YYYY', new Date(start)) +
@@ -102,9 +102,9 @@ function App() {
 
   const onClose = useCallback(() => {
     if (startDate.current && endDate.current) {
-      // navigate the calendar
+      // Navigate the calendar
       setCurrentDate(startDate.current);
-      // set calendar view
+      // Set calendar view
       setMyRefDate(startDate.current);
       setCalView({
         timeline: {
@@ -125,11 +125,11 @@ function App() {
       startDate.current = sDate;
       endDate.current = eDate;
       setTimeout(() => {
-        // set button text
+        // Set button text
         setButtonText(getFormattedRange(sDate, eDate));
-        // set range value
+        // Set range value
         setRangeVal([sDate, eDate]);
-        // navigate the calendar
+        // Navigate the calendar
         setCurrentDate(sDate);
       });
     },

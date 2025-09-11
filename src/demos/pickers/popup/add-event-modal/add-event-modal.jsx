@@ -14,8 +14,8 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 
 setOptions({
-  // locale,
-  // theme
+  // localeJs,
+  // themeJs
 });
 
 function App() {
@@ -144,7 +144,6 @@ function App() {
                 };
                 setMyEvents([...myEvents, newEvent]);
                 setSelectedDate(newEvent.start);
-                // navigateToEvent(newEvent);
 
                 handleClose();
                 setToastMessage('Event added');

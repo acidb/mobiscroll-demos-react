@@ -210,12 +210,7 @@ function App() {
           </div>
         </Popup>
       </div>
-      <Toast
-        // theme
-        message={toastText}
-        isOpen={isToastOpen}
-        onClose={handleCloseToast}
-      />
+      <Toast message={toastText} isOpen={isToastOpen} onClose={handleCloseToast} />
     </div>
   );
 }

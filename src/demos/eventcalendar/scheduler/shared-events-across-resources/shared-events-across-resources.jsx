@@ -103,14 +103,14 @@ function App() {
     const event = args.event;
     const resources = Array.isArray(event.resource) ? event.resource : [event.resource];
 
-    // store temporary event
+    // Store temporary event
     setTempEvent(args.event);
 
-    // fill popup with the current event data
+    // Fill popup with the current event data
     setTitle(event.title);
     setParticipants(resources);
 
-    // set anchor for the popup
+    // Set anchor for the popup
     setAnchor(args.target ? args.target : args.domEvent.target);
     setOpen(true);
   }, []);
@@ -156,7 +156,7 @@ function App() {
             setEvents([...myEvents]);
           }
 
-          // update event with the new properties on OK button click
+          // Update event with the new properties on OK button click
           setIsNewEvent(false);
 
           setOpen(false);

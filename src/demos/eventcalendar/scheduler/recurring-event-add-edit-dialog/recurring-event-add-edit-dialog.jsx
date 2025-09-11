@@ -201,7 +201,7 @@ const dateInputProps = {
   inputStyle: 'outline',
 };
 
-// returns the weeknumber of the passed date
+// Returns the weeknumber of the passed date
 function getWeekDayNum(date) {
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -234,7 +234,7 @@ function App() {
   const [popupEventDate, setDate] = useState([]);
   const [mySelectedDate, setSelectedDate] = useState(new Date());
 
-  // recurring editor data
+  // Recurring editor data
   const [repeatData, setRepeatData] = useState([
     {
       value: 'norepeat',
@@ -295,7 +295,7 @@ function App() {
   const [recurringEditMode, setRecurringEditMode] = useState('current');
   const [editFromPopup, setEditFromPopup] = useState(false);
 
-  // set custom values to default
+  // Set custom values to default
   const resetCustomValues = useCallback(() => {
     setRepeatType('daily');
     setRepeatNr('1');
@@ -314,7 +314,7 @@ function App() {
     const d = new Date(tempEvent.start);
     let nextYear = 0;
 
-    // navigate the calendar to the correct view
+    // Navigate the calendar to the correct view
     if (rec && rec.repeat === 'yearly') {
       if (d.getMonth() + 1 > +rec.month && d.getDay() > +rec.day) {
         nextYear = 1;
@@ -499,24 +499,24 @@ function App() {
     };
 
     if (isEdit) {
-      // update the event in the list
+      // Update the event in the list
       const index = myEvents.findIndex((x) => x.id === tempEvent.id);
       const newEventList = [...myEvents];
 
       newEventList.splice(index, 1, newEv);
       setMyEvents(newEventList);
-      // here you can update the event in your storage as well
+      // Here you can update the event in your storage as well
       // ...
     } else {
-      // add the new event to the list
+      // Add the new event to the list
       setMyEvents([...myEvents, newEv]);
-      // here you can add the event to your storage as well
+      // Here you can add the event to your storage as well
       // ...
     }
 
-    // navigate the calendar
+    // Navigate the calendar
     navigateTo();
-    // close the popup
+    // Close the popup
     setOpen(false);
   }, [tempEvent, popupEventTitle, popupEventDescription, popupEventDate, popupEventAllDay, getCustomRule, isEdit, navigateTo, myEvents]);
 
@@ -575,7 +575,7 @@ function App() {
       const newData = repeatData.slice(0);
       const weekNr = getWeekDayNum(d);
 
-      // update select texts by selected date
+      // Update select texts by selected date
       for (let i = 0; i < newData.length; ++i) {
         const item = newData[i];
         switch (item.value) {
@@ -606,7 +606,7 @@ function App() {
         setRepeatType(rec.repeat);
         setWeekDays(rec.repeat === 'weekly' ? rec.weekDays.split(',') : ['SU']);
         if (rec.interval) {
-          // set custom text
+          // Set custom text
           let customText = '';
           const nr = rec.interval;
 
@@ -646,9 +646,9 @@ function App() {
             setCondition('never');
           }
 
-          // add custom value
+          // Add custom value
           setRepeatData([...repeatData, { value: 'custom-value', text: customText }]);
-          // set custom value
+          // Set custom value
           setSelectedRepeat('custom-value');
         } else if (rec.weekDays === 'MO,TU,WE,TH,FR') {
           setSelectedRepeat('weekday');
@@ -662,7 +662,7 @@ function App() {
     [repeatData, resetCustomValues],
   );
 
-  // handle popup form changes
+  // Handle popup form changes
 
   const titleChange = useCallback((ev) => {
     setTitle(ev.target.value);
@@ -696,7 +696,7 @@ function App() {
     }
   }, [deleteEvent, tempEvent]);
 
-  // popuplate data for months
+  // Popuplate data for months
   const populateMonthDays = useCallback(
     (month, type) => {
       const day30 = [2, 4, 6, 9, 11];
@@ -771,7 +771,7 @@ function App() {
     [weekDays],
   );
 
-  // scheduler options
+  // Scheduler options
 
   const handleSelectedDateChange = useCallback((event) => {
     setSelectedDate(event.date);
@@ -784,7 +784,7 @@ function App() {
       setEdit(true);
       setTempEvent({ ...args.event });
 
-      // recurring event
+      // Recurring event
       if (event.recurring) {
         setOriginalRecurringEvent(event.original);
         setEventOccurrence({ ...event });
@@ -832,10 +832,10 @@ function App() {
       setEdit(false);
       resetCustomValues();
       setTempEvent(args.event);
-      // fill popup form with event data
+      // Fill popup form with event data
       loadPopupForm(args.event);
       setAnchor(args.target);
-      // open the popup
+      // Open the popup
       setOpen(true);
     },
     [loadPopupForm, resetCustomValues],
@@ -849,11 +849,11 @@ function App() {
   );
 
   const handleEventUpdated = useCallback(() => {
-    // here you can update the event in your storage as well, after drag & drop or resize
+    // Here you can update the event in your storage as well, after drag & drop or resize
     // ...
   }, []);
 
-  // datepicker options
+  // Datepicker options
   const controls = useMemo(() => (popupEventAllDay ? ['calendar'] : ['calendar', 'time']), [popupEventAllDay]);
   const respSetting = useMemo(
     () =>
@@ -879,7 +879,7 @@ function App() {
     [popupEventAllDay],
   );
 
-  // popup options
+  // Popup options
   const headerText = useMemo(() => (isEdit ? 'Edit event' : 'New Event'), [isEdit]);
   const popupButtons = useMemo(() => {
     if (isEdit) {
@@ -919,7 +919,7 @@ function App() {
   const onPopupClose = useCallback(() => {
     setRepeatData(repeatData.filter((item) => item.value !== 'custom-value'));
     if (!isEdit) {
-      // refresh the list, if add popup was canceled, to remove the temporary event
+      // Refresh the list, if add popup was canceled, to remove the temporary event
       setMyEvents([...myEvents]);
     }
     setEditFromPopup(false);
@@ -957,12 +957,12 @@ function App() {
               recurringEditMode,
             );
 
-            // update event
+            // Update event
             let newEventList = [...myEvents];
             const index = newEventList.findIndex((x) => x.id === events.updatedEvent.id);
             newEventList[index] = events.updatedEvent;
 
-            // add new event
+            // Add new event
             if (events.newEvent) {
               newEventList = [...newEventList, events.newEvent];
             }

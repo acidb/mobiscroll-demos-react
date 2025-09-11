@@ -2,8 +2,8 @@ import { Eventcalendar, setOptions /* localeImport */ } from '@mobiscroll/react'
 import { useMemo } from 'react';
 
 setOptions({
-  // theme,
-  // locale
+  // localeJs,
+  // themeJs
 });
 
 const myEvents = [

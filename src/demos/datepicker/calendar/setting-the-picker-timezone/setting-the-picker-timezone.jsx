@@ -1,8 +1,12 @@
-import { Datepicker, momentTimezone, setOptions /* localeImport */ } from '@mobiscroll/react';
-import moment from 'moment-timezone';
+import { Datepicker, dayjsTimezone, setOptions /* localeImport */ } from '@mobiscroll/react';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useCallback, useState } from 'react';
 
-momentTimezone.moment = moment;
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjsTimezone.dayjs = dayjs;
 
 setOptions({
   // localeJs,
@@ -26,7 +30,7 @@ function App() {
       inputStyle="outline"
       label="Pick date & time"
       labelStyle="stacked"
-      timezonePlugin={momentTimezone}
+      timezonePlugin={dayjsTimezone}
     />
   );
 }

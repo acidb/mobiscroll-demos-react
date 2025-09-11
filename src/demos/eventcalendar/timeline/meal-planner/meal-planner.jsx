@@ -97,17 +97,17 @@ function App() {
       resource: tempMeal.resource,
     };
     if (isEdit) {
-      // update the event in the list
+      // Update the event in the list
       const index = myMeals.findIndex((x) => x.id === tempMeal.id);
       const newEventList = [...myMeals];
 
       newEventList.splice(index, 1, newEvent);
       setMyMeals(newEventList);
     } else {
-      // add the new event to the list
+      // Add the new event to the list
       setMyMeals([...myMeals, newEvent]);
     }
-    // close the popup
+    // Close the popup
     setPopupOpen(false);
   }, [isEdit, myMeals, calories, notes, name, tempMeal]);
 
@@ -126,7 +126,7 @@ function App() {
     setNotes(event.notes);
   }, []);
 
-  // handle popup form changes
+  // Handle popup form changes
   const nameChange = useCallback((ev) => {
     setName(ev.target.value);
   }, []);
@@ -144,7 +144,7 @@ function App() {
     setPopupOpen(false);
   }, [deleteEvent, tempMeal]);
 
-  // scheduler options
+  // Scheduler options
   const handleEventClick = useCallback(
     (args) => {
       const event = args.event;
@@ -152,7 +152,7 @@ function App() {
       setType(event.resource);
       setEdit(true);
       setTempMeal({ ...event });
-      // fill popup form with event data
+      // Fill popup form with event data
       loadPopupForm(event);
       setPopupOpen(true);
     },
@@ -169,9 +169,9 @@ function App() {
       setType(event.resource);
       setEdit(false);
       setTempMeal(event);
-      // fill popup form with event data
+      // Fill popup form with event data
       loadPopupForm(event);
-      // open the popup
+      // Open the popup
       setPopupOpen(true);
     },
     [loadPopupForm],
@@ -193,7 +193,7 @@ function App() {
     [deleteEvent],
   );
 
-  // popup options
+  // Popup options
   const popupButtons = useMemo(() => {
     if (isEdit) {
       return [
@@ -224,7 +224,7 @@ function App() {
 
   const onPopupClose = useCallback(() => {
     if (!isEdit) {
-      // refresh the list, if add popup was canceled, to remove the temporary event
+      // Refresh the list, if add popup was canceled, to remove the temporary event
       setMyMeals([...myMeals]);
     }
     setPopupOpen(false);

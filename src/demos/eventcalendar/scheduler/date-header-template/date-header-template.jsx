@@ -68,7 +68,6 @@ function App() {
 
   const renderCustomDay = useCallback((args) => {
     const date = args.date;
-    // const dayNr = date.getDay();
     const task = milestones.find((obj) => +new Date(obj.date) === +date) || {};
 
     return (

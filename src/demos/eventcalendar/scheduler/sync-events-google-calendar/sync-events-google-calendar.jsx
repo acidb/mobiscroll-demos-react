@@ -259,7 +259,7 @@ function App() {
       setEvents([]);
     };
 
-    // init google client
+    // Init google client
     googleCalendarSync.init({
       apiKey: '<YOUR_GOOGLE_API_KEY>',
       clientId: '<YOUR_GOOGLE_CLIENT_ID>',

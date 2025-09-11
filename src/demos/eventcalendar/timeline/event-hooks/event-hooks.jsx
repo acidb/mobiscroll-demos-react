@@ -17,10 +17,16 @@ const dragData2 = {
   color: '#ddfcf7',
 };
 
+const dragData3 = {
+  name: 'External resource',
+  color: '#d19494',
+};
+
 function App() {
   const [myEvents, setEvents] = useState([]);
   const [draggable1, setDraggable1] = useState();
   const [draggable2, setDraggable2] = useState();
+  const [draggable3, setDraggable3] = useState();
 
   const myInvalid = useMemo(
     () => [
@@ -105,22 +111,35 @@ function App() {
         <div className="draggable-text">Drag me to calendar</div>
         <Draggable dragData={dragData2} element={draggable2} />
       </div>
+      <div ref={setDraggable3} className="event-hooks-draggable" style={{ background: '#d19494' }}>
+        <div className="draggable-title">External resource</div>
+        <div className="draggable-text">Drag me to calendar</div>
+        <Draggable dragData={dragData3} element={draggable3} type="resource" />
+      </div>
       <Eventcalendar
         data={myEvents}
         dragToCreate={true}
         dragToMove={true}
         dragToResize={true}
+        externalDrop={true}
+        externalResourceDrop={true}
         view={myView}
         resources={myResources}
         invalid={myInvalid}
         onCellClick={() => {
-          /* Logic for cell click */
+          // Logic for cell click
         }}
         onCellDoubleClick={() => {
-          /* Logic for cell double click */
+          // Logic for cell double click
         }}
         onCellRightClick={() => {
-          /* Logic for cell right click */
+          // Logic for cell right click
+        }}
+        onCellHoverIn={() => {
+          // Logic for cell hover in
+        }}
+        onCellHoverOut={() => {
+          // Logic for cell hover out
         }}
         onDestroy={() => {
           // Your custom event handler goes here
@@ -197,8 +216,32 @@ function App() {
         onResourceOrderUpdate={() => {
           // Logic for resource update
         }}
+        onResourceCreate={() => {
+          // Logic for resource create
+        }}
+        onResourceCreated={() => {
+          // Logic for resource created
+        }}
+        onResourceDelete={() => {
+          // Logic for resource delete
+        }}
+        onResourceDeleted={() => {
+          // Logic for resource deleted
+        }}
+        onResourceDragEnter={() => {
+          // Logic for resource update
+        }}
+        onResourceDragLeave={() => {
+          // Logic for resource update
+        }}
         onResourceRightClick={() => {
           // Logic for resource right click
+        }}
+        onResourceHoverIn={() => {
+          // Logic for resource hover in
+        }}
+        onResourceHoverOut={() => {
+          // Logic for resource hover out
         }}
         onSelectedDateChange={() => {
           // Use it to keep track of the selected date externally

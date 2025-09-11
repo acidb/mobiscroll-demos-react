@@ -10,7 +10,7 @@ function App() {
       <Datepicker
         select="range"
         display="inline"
-        locale={localeEs} // sets the language of the component
+        locale={localeEs} // Sets the language of the component
       />
     </div>
   );

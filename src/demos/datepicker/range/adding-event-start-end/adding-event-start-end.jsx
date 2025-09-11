@@ -2,7 +2,7 @@ import { Datepicker, Input, Page, Segmented, SegmentedGroup, setOptions, Switch,
 import { useCallback, useMemo, useState } from 'react';
 
 setOptions({
-  // langJs,
+  // localeJs,
   // themeJs
 });
 

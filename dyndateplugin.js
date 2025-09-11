@@ -5,7 +5,7 @@ export default function myPlugin() {
       if (/\.(jsx)$/.test(id)) {
         return {
           code: replaceDynamicDates(src),
-          map: null, // provide source map if available
+          map: null, // Provide source map if available
         };
       }
     },
