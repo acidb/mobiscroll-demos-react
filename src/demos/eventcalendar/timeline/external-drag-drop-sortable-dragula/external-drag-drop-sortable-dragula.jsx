@@ -1,4 +1,12 @@
-import { Draggable, dragulaDraggable, Eventcalendar, setOptions, sortableJsDraggable, Toast /* localeImport */ } from '@mobiscroll/react';
+import {
+  Draggable,
+  dragulaDraggable,
+  Dropcontainer,
+  Eventcalendar,
+  setOptions,
+  sortableJsDraggable,
+  Toast /* localeImport */,
+} from '@mobiscroll/react';
 import dragula from 'dragula';
 import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from 'react';
@@ -65,6 +73,7 @@ Resource.propTypes = {
 };
 
 function App() {
+  const [dropCont, setDropCont] = useState();
   const [sortableTaskCont, setSortableTaskCont] = useState();
   const [dragulaTaskCont, setDragulaTaskCont] = useState();
   const [sortableResourceCont, setSortableResourceCont] = useState();
@@ -106,28 +115,28 @@ function App() {
   const [mySortableTasks, setSortableTasks] = useState([
     {
       id: 'sortable-1',
-      title: 'Task 1',
+      title: 'Task 5',
       color: '#d1891f',
       start: 'dyndatetime(y,m,d,8)',
       end: 'dyndatetime(y,m,d,9,30)',
     },
     {
       id: 'sortable-2',
-      title: 'Task 2',
+      title: 'Task 6',
       color: '#d1891f',
       start: 'dyndatetime(y,m,d,12)',
       end: 'dyndatetime(y,m,d,15)',
     },
     {
       id: 'sortable-3',
-      title: 'Task 3',
+      title: 'Task 7',
       color: '#d1891f',
       start: 'dyndatetime(y,m,d,8,30)',
       end: 'dyndatetime(y,m,d,11)',
     },
     {
       id: 'sortable-4',
-      title: 'Task 4',
+      title: 'Task 8',
       color: '#d1891f',
       start: 'dyndatetime(y,m,d,16)',
       end: 'dyndatetime(y,m,d,21)',
@@ -137,28 +146,28 @@ function App() {
   const [myDragulaTasks, setDragulaTasks] = useState([
     {
       id: 'dragula-1',
-      title: 'Task 5',
+      title: 'Task 9',
       color: '#1ca11a',
       start: 'dyndatetime(y,m,d,8)',
       end: 'dyndatetime(y,m,d,9,30)',
     },
     {
       id: 'dragula-2',
-      title: 'Task 6',
+      title: 'Task 10',
       color: '#1ca11a',
       start: 'dyndatetime(y,m,d,12)',
       end: 'dyndatetime(y,m,d,15)',
     },
     {
       id: 'dragula-3',
-      title: 'Task 7',
+      title: 'Task 11',
       color: '#1ca11a',
       start: 'dyndatetime(y,m,d,8,30)',
       end: 'dyndatetime(y,m,d,11)',
     },
     {
       id: 'dragula-4',
-      title: 'Task 8',
+      title: 'Task 12',
       color: '#1ca11a',
       start: 'dyndatetime(y,m,d,16)',
       end: 'dyndatetime(y,m,d,20,30)',
@@ -250,6 +259,11 @@ function App() {
     }
   }, []);
 
+  const handleEventDeleted = useCallback((args) => {
+    setToastMessage(args.event.title + ' unscheduled');
+    setToastOpen(true);
+  }, []);
+
   const handleResourceCreated = useCallback((args) => {
     if (args.type === 'onResourceCreated') {
       setDraggableResources((resources) => resources.filter((item) => item.id !== args.resource.id));
@@ -260,24 +274,41 @@ function App() {
     }
   }, []);
 
+  const handleItemDrop = useCallback((args) => {
+    if (args.data) {
+      setDraggableTasks((tasks) => [...tasks, args.data]);
+    }
+  }, []);
+
   const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
 
   useEffect(() => {
+    let sortableTaskInstance;
     if (sortableTaskCont) {
-      const sortableTaskInstance = new Sortable(sortableTaskCont, {
+      sortableTaskInstance = new Sortable(sortableTaskCont, {
         animation: 150,
         forceFallback: true,
       });
 
       sortableJsDraggable.init(sortableTaskInstance, {
         cloneSelector: '.sortable-drag',
+        externalDrop: true,
+        onExternalDrop: (a) => {
+          const dragData = a.dragData;
+          setSortableTasks((prev) => {
+            const newTasks = [...prev];
+            newTasks.splice(a.position, 0, dragData);
+            return newTasks;
+          });
+        },
       });
     }
 
+    let sortableResourceInstance;
     if (sortableResourceCont) {
-      const sortableResourceInstance = new Sortable(sortableResourceCont, {
+      sortableResourceInstance = new Sortable(sortableResourceCont, {
         animation: 150,
         forceFallback: true,
       });
@@ -288,17 +319,44 @@ function App() {
       });
     }
 
+    let drake1;
     if (dragulaTaskCont) {
-      const drake1 = dragula([dragulaTaskCont]);
-      dragulaDraggable.init(drake1);
+      drake1 = dragula([dragulaTaskCont]);
+      dragulaDraggable.init(drake1, {
+        externalDrop: true,
+        onExternalDrop: (a) => {
+          const dragData = a.dragData;
+          setDragulaTasks((prev) => {
+            const newTasks = [...prev];
+            newTasks.splice(a.position, 0, dragData);
+            return newTasks;
+          });
+        },
+      });
     }
 
+    let drake2;
     if (dragulaResourceCont) {
-      const drake2 = dragula([dragulaResourceCont]);
+      drake2 = dragula([dragulaResourceCont]);
       dragulaDraggable.init(drake2, {
         type: 'resource',
       });
     }
+
+    return () => {
+      if (sortableTaskInstance) {
+        sortableTaskInstance.destroy();
+      }
+      if (sortableResourceInstance) {
+        sortableResourceInstance.destroy();
+      }
+      if (drake1) {
+        drake1.destroy();
+      }
+      if (drake2) {
+        drake2.destroy();
+      }
+    };
   }, [dragulaTaskCont, dragulaResourceCont, sortableTaskCont, sortableResourceCont]);
 
   return (
@@ -308,11 +366,13 @@ function App() {
           <div className="mbsc-txt-muted mds-third-party-title">Mobiscroll draggable</div>
           <div className="mbsc-flex">
             <div className="mbsc-col-sm-6 mbsc-flex-col">
-              <div className="mds-drag-drop-sort-container mbsc-flex-col mbsc-flex-1-0">
+              <div className="mds-drag-drop-sort-container mbsc-flex-col mbsc-flex-1-0" ref={setDropCont}>
                 <div className="mbsc-txt-muted mds-third-party-list-title">Event list</div>
-                {myDraggableTasks.map((task) => (
-                  <Task key={task.id} data={task} isDraggable />
-                ))}
+                <Dropcontainer onItemDrop={handleItemDrop} element={dropCont}>
+                  {myDraggableTasks.map((task) => (
+                    <Task key={task.id} data={task} isDraggable />
+                  ))}
+                </Dropcontainer>
               </div>
             </div>
             <div className="mbsc-col-sm-6 mbsc-flex-col">
@@ -374,12 +434,16 @@ function App() {
         <div className="mbsc-col-sm-9 mds-drag-drop-sort-calendar mds-full-height">
           <Eventcalendar
             // drag
+            view={myView}
+            resources={myResources}
+            dragToMove={true}
+            dragToCreate={true}
             externalDrop={true}
+            externalDrag={true}
             externalResourceDrop={true}
             onEventCreated={handleEventCreated}
             onResourceCreated={handleResourceCreated}
-            resources={myResources}
-            view={myView}
+            onEventDelete={handleEventDeleted}
           />
         </div>
       </div>

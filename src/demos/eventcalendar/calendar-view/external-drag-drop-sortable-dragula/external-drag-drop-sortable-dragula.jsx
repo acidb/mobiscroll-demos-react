@@ -178,21 +178,51 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let sortableInstance;
     if (sortableCont) {
-      const sortableInstance = new Sortable(sortableCont, {
+      sortableInstance = new Sortable(sortableCont, {
         animation: 150,
         forceFallback: true,
       });
 
       sortableJsDraggable.init(sortableInstance, {
         cloneSelector: '.sortable-drag',
+        externalDrop: true,
+        onExternalDrop: (a) => {
+          const dragData = a.dragData;
+          setSortableTasks((prev) => {
+            const newTasks = [...prev];
+            newTasks.splice(a.position, 0, dragData);
+            return newTasks;
+          });
+        },
       });
     }
 
+    let drake;
     if (dragulaCont) {
-      const drake = dragula([dragulaCont]);
-      dragulaDraggable.init(drake);
+      drake = dragula([dragulaCont]);
+      dragulaDraggable.init(drake, {
+        externalDrop: true,
+        onExternalDrop: (a) => {
+          const dragData = a.dragData;
+          setDragulaTasks((prev) => {
+            const newTasks = [...prev];
+            newTasks.splice(a.position, 0, dragData);
+            return newTasks;
+          });
+        },
+      });
     }
+
+    return () => {
+      if (sortableInstance) {
+        sortableInstance.destroy();
+      }
+      if (drake) {
+        drake.destroy();
+      }
+    };
   }, [dragulaCont, sortableCont]);
 
   useEffect(() => {
