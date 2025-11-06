@@ -8,6 +8,7 @@ setOptions({
 
 function App() {
   const [myEvents, setEvents] = useState([]);
+
   const myResources = useMemo(
     () => [
       {
@@ -44,12 +45,7 @@ function App() {
     [],
   );
 
-  const myView = useMemo(
-    () => ({
-      timeline: { type: 'day' },
-    }),
-    [],
-  );
+  const myView = useMemo(() => ({ timeline: { type: 'day' } }), []);
 
   useEffect(() => {
     getJson(
@@ -61,14 +57,7 @@ function App() {
     );
   }, []);
 
-  return (
-    <Eventcalendar
-      // drag
-      data={myEvents}
-      view={myView}
-      resources={myResources}
-    />
-  );
+  return <Eventcalendar data={myEvents} resources={myResources} view={myView} />;
 }
 
 export default App;

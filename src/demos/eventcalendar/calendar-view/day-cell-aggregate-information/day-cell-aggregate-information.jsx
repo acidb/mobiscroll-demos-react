@@ -303,7 +303,6 @@ function App() {
           });
           break;
       }
-      console.log(date);
       if (date) {
         setCurrentDate(date);
       }

@@ -1,6 +1,5 @@
 import { Eventcalendar, setOptions /* localeImport */ } from '@mobiscroll/react';
 import { useMemo } from 'react';
-import './load-inline-data.css';
 
 setOptions({
   // localeJs,

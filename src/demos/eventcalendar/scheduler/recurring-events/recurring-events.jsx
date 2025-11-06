@@ -55,12 +55,7 @@ function App() {
     [],
   );
 
-  const myView = useMemo(
-    () => ({
-      schedule: { type: 'week' },
-    }),
-    [],
-  );
+  const myView = useMemo(() => ({ schedule: { type: 'week' } }), []);
 
   return (
     <Eventcalendar

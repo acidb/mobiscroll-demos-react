@@ -21,13 +21,7 @@ function App() {
     );
   }, []);
 
-  return (
-    <Eventcalendar
-      // drag
-      data={myEvents}
-      view={myView}
-    />
-  );
+  return <Eventcalendar data={myEvents} view={myView} />;
 }
 
 export default App;
