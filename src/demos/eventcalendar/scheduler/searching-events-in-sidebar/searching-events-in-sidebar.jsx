@@ -16,7 +16,7 @@ function App() {
   const calInst = useRef();
   const timer = useRef(null);
 
-  const calView = useMemo(() => ({ schedule: { type: 'week' } }), []);
+  const calView = useMemo(() => ({ scheduler: { type: 'week' } }), []);
   const listView = useMemo(() => ({ agenda: { type: 'year', size: 5 } }), []);
 
   const handleInputChange = useCallback((ev) => {

@@ -1,5 +1,6 @@
 import { Datepicker, setOptions /* localeImport */ } from '@mobiscroll/react';
 import { useMemo } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 import './half-day-styling.css';
 
 setOptions({
@@ -10,9 +11,9 @@ setOptions({
 function App() {
   const myColors = useMemo(
     () => [
-      { date: 'dyndatetime(y,m,12)', cellCssClass: 'check-in' },
-      { date: 'dyndatetime(y,m,16)', cellCssClass: 'check-out' },
-      { start: 'dyndatetime(y,m,13)', end: 'dyndatetime(y,m,15)', background: '#46c4f3' },
+      { date: dyndatetime('y,m,12'), cellCssClass: 'check-in' },
+      { date: dyndatetime('y,m,16'), cellCssClass: 'check-out' },
+      { start: dyndatetime('y,m,13'), end: dyndatetime('y,m,15'), background: '#46c4f3' },
     ],
     [],
   );

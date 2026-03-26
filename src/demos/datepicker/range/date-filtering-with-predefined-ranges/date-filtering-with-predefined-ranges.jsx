@@ -1,5 +1,6 @@
 import { Button, Datepicker, formatDate, Input, options, Page, Popup, Select, setOptions /* localeImport */ } from '@mobiscroll/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 import './date-filtering-with-predefined-ranges.css';
 
 setOptions({
@@ -7,8 +8,8 @@ setOptions({
   // themeJs
 });
 
-const startDate = 'dyndatetime(y,m,d)';
-const endDate = 'dyndatetime(y,m,d+6)';
+const startDate = dyndatetime('y,m,d');
+const endDate = dyndatetime('y,m,d+6');
 const now = new Date();
 const day = now.getDay();
 const monday = now.getDate() - day + (day === 0 ? -6 : 1);
@@ -52,10 +53,10 @@ function App() {
 
       switch (s) {
         case 'today':
-          setSelectedDate(['dyndatetime(y,m,d)', 'dyndatetime(y,m,d)']);
+          setSelectedDate([dyndatetime('y,m,d'), dyndatetime('y,m,d')]);
           break;
         case 'yesterday':
-          setSelectedDate(['dyndatetime(y,m,d-1)', 'dyndatetime(y,m,d-1)']);
+          setSelectedDate([dyndatetime('y,m,d-1'), dyndatetime('y,m,d-1')]);
           break;
         case 'last-week':
           setSelectedDate([
@@ -64,13 +65,13 @@ function App() {
           ]);
           break;
         case 'last-month':
-          setSelectedDate(['dyndatetime(y,m-1,1)', 'dyndatetime(y,m,0)']);
+          setSelectedDate([dyndatetime('y,m-1,1'), dyndatetime('y,m,0')]);
           break;
         case 'last-7-days':
-          setSelectedDate(['dyndatetime(y,m,d-6)', 'dyndatetime(y,m,d)']);
+          setSelectedDate([dyndatetime('y,m,d-6'), dyndatetime('y,m,d')]);
           break;
         case 'last-30-days':
-          setSelectedDate(['dyndatetime(y,m,d-29)', 'dyndatetime(y,m,d)']);
+          setSelectedDate([dyndatetime('y,m,d-29'), dyndatetime('y,m,d')]);
           break;
         default:
           break;

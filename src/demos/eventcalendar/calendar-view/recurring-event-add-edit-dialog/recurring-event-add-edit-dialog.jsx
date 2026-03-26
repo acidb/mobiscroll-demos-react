@@ -16,6 +16,7 @@ import {
   updateRecurringEvent /* localeImport */,
 } from '@mobiscroll/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 import './recurring-event-add-edit-dialog.css';
 
 setOptions({
@@ -26,8 +27,8 @@ setOptions({
 const defaultEvents = [
   {
     id: 1,
-    start: 'dyndatetime(y,m,21)',
-    end: 'dyndatetime(y,m,24)',
+    start: dyndatetime('y,m,21'),
+    end: dyndatetime('y,m,24'),
     title: 'Alice OFF',
     allDay: true,
     color: '#67ab0d',

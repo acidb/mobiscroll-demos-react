@@ -25,7 +25,7 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [view, setView] = useState('week');
   const [calView, setCalView] = useState({
-    schedule: { type: 'week' },
+    scheduler: { type: 'week' },
   });
   const [isToastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -80,12 +80,12 @@ function App() {
       case 'week':
       default:
         calView = {
-          schedule: { type: 'week' },
+          scheduler: { type: 'week' },
         };
         break;
       case 'day':
         calView = {
-          schedule: { type: 'day' },
+          scheduler: { type: 'day' },
         };
         break;
       case 'agenda':

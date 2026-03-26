@@ -1,5 +1,6 @@
 import { Button, Eventcalendar, Page, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 import './event-data-structure.css';
 
 setOptions({
@@ -11,8 +12,8 @@ function App() {
   const [isToastOpen, setToastOpen] = useState(false);
   const [myEvents, setEvents] = useState([
     {
-      start: 'dyndatetime(y,m,d,11)',
-      end: 'dyndatetime(y,m,d,13)',
+      start: dyndatetime('y,m,d,11'),
+      end: dyndatetime('y,m,d,13'),
       title: 'General orientation',
       resource: 2,
       bufferBefore: 20,
@@ -43,8 +44,8 @@ function App() {
     const newEvent = {
       // Base properties
       title: 'Product planning',
-      start: 'dyndatetime(y,m,d,15)',
-      end: 'dyndatetime(y,m,d,17)',
+      start: dyndatetime('y,m,d,15'),
+      end: dyndatetime('y,m,d,17'),
       resource: 4,
       bufferBefore: 20,
       bufferAfter: 30,

@@ -74,7 +74,7 @@ const defaultEvents = [
 ];
 
 const viewSettings = {
-  schedule: { type: 'week' },
+  scheduler: { type: 'week' },
 };
 
 const responsivePopup = {

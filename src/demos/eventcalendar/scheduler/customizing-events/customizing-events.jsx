@@ -15,14 +15,14 @@ function App() {
     () => ({
       xsmall: {
         view: {
-          schedule: {
+          scheduler: {
             type: 'day',
           },
         },
       },
       medium: {
         view: {
-          schedule: {
+          scheduler: {
             type: 'week',
           },
         },
@@ -182,7 +182,7 @@ function App() {
     <div>
       <Eventcalendar
         // drag
-        renderScheduleEvent={customScheduleEvent}
+        renderSchedulerEvent={customScheduleEvent}
         renderBufferBefore={myBeforeBuffer}
         responsive={resp}
         data={myEvents}

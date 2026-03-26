@@ -19,7 +19,7 @@ function App() {
     () => ({
       timeline: {
         type: 'month',
-        eventList: true,
+        eventDisplay: 'fill',
       },
     }),
     [],

@@ -11,7 +11,7 @@ function App() {
   const [myTheme, setTheme] = useState();
   const [myThemeVariant, setThemeVariant] = useState();
 
-  const myView = useMemo(() => ({ schedule: { type: 'week' } }), []);
+  const myView = useMemo(() => ({ scheduler: { type: 'week' } }), []);
 
   const handleThemeChange = useCallback((ev) => {
     setTheme(ev.target.value);

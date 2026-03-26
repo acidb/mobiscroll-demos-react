@@ -42,7 +42,7 @@ const App = () => {
 
   const myView = useMemo(
     () => ({
-      schedule: {
+      scheduler: {
         allDay: false,
         maxEventStack: 2,
         type: 'week',

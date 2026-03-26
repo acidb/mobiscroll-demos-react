@@ -21,7 +21,7 @@ function App() {
   const [myEvents, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calView, setCalView] = useState({
-    schedule: {
+    scheduler: {
       type: 'week',
     },
   });
@@ -39,7 +39,7 @@ function App() {
           break;
         case 'schedule':
           calendarView = {
-            schedule: {
+            scheduler: {
               type: 'week',
             },
           };

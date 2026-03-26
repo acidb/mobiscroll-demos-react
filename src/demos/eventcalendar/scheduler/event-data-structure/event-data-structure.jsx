@@ -22,7 +22,7 @@ function App() {
 
   const calInst = useRef();
 
-  const myView = useMemo(() => ({ schedule: { type: 'day' } }), []);
+  const myView = useMemo(() => ({ scheduler: { type: 'day' } }), []);
 
   const handleToastClose = useCallback(() => {
     setToastOpen(false);

@@ -86,7 +86,7 @@ function App() {
     <>
       <Eventcalendar
         // drag
-        renderEventContent={customEventContent}
+        renderPopoverEventContent={customEventContent}
         data={myEvents}
         view={myView}
       />

@@ -30,7 +30,7 @@ function App() {
 
   const myView = useMemo(
     () => ({
-      schedule: {
+      scheduler: {
         type: 'week',
         startDay: 1,
         endDay: 5,

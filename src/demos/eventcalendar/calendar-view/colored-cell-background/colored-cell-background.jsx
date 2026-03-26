@@ -1,5 +1,6 @@
 import { Eventcalendar, getJson, setOptions /* localeImport */ } from '@mobiscroll/react';
 import { useEffect, useMemo, useState } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 
 setOptions({
   // localeJs,
@@ -12,25 +13,25 @@ function App() {
   const myColors = useMemo(
     () => [
       {
-        start: 'dyndatetime(y,m,0)',
-        end: 'dyndatetime(y,m,1)',
+        start: dyndatetime('y,m,0'),
+        end: dyndatetime('y,m,1'),
         background: '#fde4c880',
       },
       {
-        start: 'dyndatetime(y,m,17)',
-        end: 'dyndatetime(y,m,20)',
+        start: dyndatetime('y,m,17'),
+        end: dyndatetime('y,m,20'),
         background: '#d5f1ea80',
       },
       {
-        date: 'dyndatetime(y,m,29)',
+        date: dyndatetime('y,m,29'),
         background: '#ffdbdb80',
       },
       {
-        date: 'dyndatetime(y,m+1,3)',
+        date: dyndatetime('y,m+1,3'),
         background: '#fbedd080',
       },
       {
-        date: 'dyndatetime(y,m+1,10)',
+        date: dyndatetime('y,m+1,10'),
         background: '#fbedd080',
       },
       {

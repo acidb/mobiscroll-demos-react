@@ -60,7 +60,7 @@ function App() {
     timeline: {
       type: 'day',
       size: 14,
-      eventList: true,
+      eventDisplay: 'fill',
     },
   });
 
@@ -110,7 +110,7 @@ function App() {
         timeline: {
           type: 'day',
           size: getNrDays(startDate.current, endDate.current),
-          eventList: true,
+          eventDisplay: 'fill',
         },
       });
     }

@@ -13,14 +13,14 @@ function App() {
     () => ({
       xsmall: {
         view: {
-          schedule: { type: 'day' },
+          scheduler: { type: 'day' },
         },
       },
       custom: {
         // Custom breakpoint
         breakpoint: 600,
         view: {
-          schedule: { type: 'week' },
+          scheduler: { type: 'week' },
         },
       },
     }),

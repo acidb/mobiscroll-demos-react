@@ -25,7 +25,7 @@ function App() {
   const [isToastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState();
 
-  const myView = useMemo(() => ({ schedule: { type: 'week' } }), []);
+  const myView = useMemo(() => ({ scheduler: { type: 'week' } }), []);
 
   const myResources = useMemo(
     () => [

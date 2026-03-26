@@ -1,6 +1,7 @@
 import { Draggable, Dropcontainer, Eventcalendar, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 import './doctors-appointment.css';
 
 setOptions({
@@ -43,8 +44,8 @@ const App = () => {
   const [myEvents, setEvents] = useState([
     {
       id: 'job1',
-      start: 'dyndatetime(y,m,d,14)',
-      end: 'dyndatetime(y,m,d,16)',
+      start: dyndatetime('y,m,d,14'),
+      end: dyndatetime('y,m,d,16'),
       resource: 1,
       title: 'Myla Bennett',
       job: 'Wisdom tooth removal',
@@ -52,8 +53,8 @@ const App = () => {
     },
     {
       id: 'job2',
-      start: 'dyndatetime(y,m,d,17)',
-      end: 'dyndatetime(y,m,d,18,30)',
+      start: dyndatetime('y,m,d,17'),
+      end: dyndatetime('y,m,d,18,30'),
       resource: 1,
       title: 'Beatrix Foley',
       job: 'Braces',
@@ -61,8 +62,8 @@ const App = () => {
     },
     {
       id: 'job3',
-      start: 'dyndatetime(y,m,d,8)',
-      end: 'dyndatetime(y,m,d,9,30)',
+      start: dyndatetime('y,m,d,8'),
+      end: dyndatetime('y,m,d,9,30'),
       resource: 3,
       title: 'Frank Watson',
       job: 'Teeth whitening',
@@ -70,8 +71,8 @@ const App = () => {
     },
     {
       id: 'job4',
-      start: 'dyndatetime(y,m,d,10)',
-      end: 'dyndatetime(y,m,d,12,30)',
+      start: dyndatetime('y,m,d,10'),
+      end: dyndatetime('y,m,d,12,30'),
       resource: 3,
       title: 'Jaime Joyce',
       job: 'Root canal treatment',
@@ -79,8 +80,8 @@ const App = () => {
     },
     {
       id: 'job5',
-      start: 'dyndatetime(y,m,d,13)',
-      end: 'dyndatetime(y,m,d,14)',
+      start: dyndatetime('y,m,d,13'),
+      end: dyndatetime('y,m,d,14'),
       resource: 3,
       title: 'Corey Shepard',
       job: 'Tooth extraction',
@@ -88,8 +89,8 @@ const App = () => {
     },
     {
       id: 'job6',
-      start: 'dyndatetime(y,m,d,14)',
-      end: 'dyndatetime(y,m,d,16)',
+      start: dyndatetime('y,m,d,14'),
+      end: dyndatetime('y,m,d,16'),
       resource: 4,
       title: 'Callie Leonard',
       job: 'Crown and bridge',
@@ -97,8 +98,8 @@ const App = () => {
     },
     {
       id: 'job7',
-      start: 'dyndatetime(y,m,d,17)',
-      end: 'dyndatetime(y,m,d,18)',
+      start: dyndatetime('y,m,d,17'),
+      end: dyndatetime('y,m,d,18'),
       resource: 4,
       title: 'Harley Thomson',
       job: 'Tartar removal',
@@ -106,8 +107,8 @@ const App = () => {
     },
     {
       id: 'job8',
-      start: 'dyndatetime(y,m,d,9)',
-      end: 'dyndatetime(y,m,d,11)',
+      start: dyndatetime('y,m,d,9'),
+      end: dyndatetime('y,m,d,11'),
       resource: 6,
       title: 'Ricky Welch',
       job: 'Wisdom tooth removal',
@@ -121,8 +122,8 @@ const App = () => {
       title: 'Winfred Lesley',
       job: 'Teeth whitening',
       color: '#d1891f',
-      start: 'dyndatetime(y,m,d,8)',
-      end: 'dyndatetime(y,m,d,9,30)',
+      start: dyndatetime('y,m,d,8'),
+      end: dyndatetime('y,m,d,9,30'),
       unscheduled: true,
     },
     {
@@ -130,8 +131,8 @@ const App = () => {
       title: 'Rosalin Delice',
       job: 'Crown and bridge',
       color: '#1ca11a',
-      start: 'dyndatetime(y,m,d,8)',
-      end: 'dyndatetime(y,m,d,10)',
+      start: dyndatetime('y,m,d,8'),
+      end: dyndatetime('y,m,d,10'),
       unscheduled: true,
     },
     {
@@ -139,8 +140,8 @@ const App = () => {
       title: 'Macy Steven',
       job: 'Root canal treatment',
       color: '#cb3939',
-      start: 'dyndatetime(y,m,d,10)',
-      end: 'dyndatetime(y,m,d,12,30)',
+      start: dyndatetime('y,m,d,10'),
+      end: dyndatetime('y,m,d,12,30'),
       unscheduled: true,
     },
     {
@@ -148,8 +149,8 @@ const App = () => {
       title: 'Lavern Cameron',
       job: 'Tartar removal',
       color: '#a446b5',
-      start: 'dyndatetime(y,m,d,12)',
-      end: 'dyndatetime(y,m,d,13)',
+      start: dyndatetime('y,m,d,12'),
+      end: dyndatetime('y,m,d,13'),
       unscheduled: true,
     },
   ]);
@@ -192,7 +193,7 @@ const App = () => {
 
   const myView = useMemo(
     () => ({
-      schedule: {
+      scheduler: {
         type: 'day',
         startTime: '08:00',
         endTime: '20:00',

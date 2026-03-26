@@ -51,7 +51,7 @@ function App() {
     () => ({
       timeline: {
         type: 'week',
-        eventList: true,
+        eventDisplay: 'fill',
       },
     }),
     [],

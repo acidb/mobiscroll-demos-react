@@ -109,6 +109,7 @@ function App() {
       display="inline"
       calendarType={calType}
       calendarSize={3}
+      refDate="1970-01-01"
       renderCalendarHeader={calendarHeaderSwitch}
       onPageChange={handlePageChange}
       onChange={handleDateChange}

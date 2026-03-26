@@ -10,7 +10,7 @@ setOptions({
 function App() {
   const [myEvents, setEvents] = useState([]);
   const [mySelectedDate, setSelectedDate] = useState(new Date());
-  const dayView = useMemo(() => ({ schedule: { type: 'day' } }), []);
+  const dayView = useMemo(() => ({ scheduler: { type: 'day' } }), []);
 
   const handleDateChange = useCallback((args) => {
     setSelectedDate(args.value);

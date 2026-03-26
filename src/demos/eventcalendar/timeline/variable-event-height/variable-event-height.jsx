@@ -88,7 +88,7 @@ function App() {
       dragToMove={true}
       dragToResize={true}
       dragInTime={true}
-      renderScheduleEventContent={customScheduleEventContent}
+      renderTimelineEventContent={customScheduleEventContent}
     />
   );
 }

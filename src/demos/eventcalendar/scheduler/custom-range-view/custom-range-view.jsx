@@ -24,7 +24,7 @@ function App() {
   const [rangeVal, setRangeVal] = useState([]);
   const [buttonText, setButtonText] = useState([]);
   const [calView, setCalView] = useState({
-    schedule: {
+    scheduler: {
       type: 'day',
       size: 14,
     },
@@ -72,7 +72,7 @@ function App() {
       // Set calendar view
       setMyRefDate(startDate.current);
       setCalView({
-        schedule: {
+        scheduler: {
           type: 'day',
           size: getNrDays(startDate.current, endDate.current),
         },

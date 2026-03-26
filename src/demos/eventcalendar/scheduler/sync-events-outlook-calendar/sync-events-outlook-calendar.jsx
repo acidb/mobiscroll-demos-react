@@ -36,7 +36,7 @@ function App() {
   const [isUpdateConfirmOpen, setUpdateConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const view = useMemo(() => ({ schedule: { type: 'week' } }), []);
+  const view = useMemo(() => ({ scheduler: { type: 'week' } }), []);
 
   const debounce = useRef();
   const startDate = useRef();

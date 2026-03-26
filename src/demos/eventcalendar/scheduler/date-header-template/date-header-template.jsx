@@ -1,5 +1,6 @@
 import { Eventcalendar, formatDate, getJson, setOptions /* localeImport */ } from '@mobiscroll/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { dyndatetime } from '../../../../dyndatetime';
 import './date-header-template.css';
 
 setOptions({
@@ -9,17 +10,17 @@ setOptions({
 
 const milestones = [
   {
-    date: 'dyndatetime(y,m,d-2)',
+    date: dyndatetime('y,m,d-2'),
     name: 'Project review',
     color: '#f5da7b',
   },
   {
-    date: 'dyndatetime(y,m,d-1)',
+    date: dyndatetime('y,m,d-1'),
     name: 'Product shipping',
     color: '#acf3a3',
   },
   {
-    date: 'dyndatetime(y,m,d+1)',
+    date: dyndatetime('y,m,d+1'),
     name: 'Cycle finish',
     color: '#ff84a0',
   },
@@ -30,7 +31,7 @@ function App() {
 
   const calView = useMemo(
     () => ({
-      schedule: {
+      scheduler: {
         type: 'week',
         allDay: false,
         startDay: 1,
@@ -110,7 +111,7 @@ function App() {
       data={myEvents}
       resources={myResources}
       groupBy="date"
-      renderDay={renderCustomDay}
+      renderSchedulerDay={renderCustomDay}
       renderResource={renderCustomResource}
     />
   );

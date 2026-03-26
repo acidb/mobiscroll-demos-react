@@ -251,7 +251,7 @@ function App() {
       renderSidebarHeader={myCustomSidebarHeader}
       renderSidebar={myCustomSidebar}
       renderResourceFooter={myCustomResourceFooter}
-      renderDay={myCustomDay}
+      renderTimelineDay={myCustomDay}
       renderDayFooter={myCustomDayFooter}
       renderSidebarFooter={myCustomSidebarFooter}
       onPageLoading={handlePageLoading}

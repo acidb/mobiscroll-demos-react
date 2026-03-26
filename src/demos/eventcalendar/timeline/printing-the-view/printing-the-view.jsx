@@ -55,7 +55,7 @@ function App() {
         type: 'week',
         startDay: 1,
         endDay: 5,
-        eventList: true,
+        eventDisplay: 'fill',
       },
     }),
     [],

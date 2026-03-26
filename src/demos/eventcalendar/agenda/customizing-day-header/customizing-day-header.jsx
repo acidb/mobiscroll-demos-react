@@ -64,7 +64,7 @@ function App() {
 
   return (
     <>
-      <Eventcalendar className="mds-custom-day-header" view={myView} data={myEvents} renderDay={renderCustomDay} />;
+      <Eventcalendar className="mds-custom-day-header" view={myView} data={myEvents} renderAgendaDay={renderCustomDay} />;
       <Toast message="Event added" isOpen={isToastOpen} onClose={handleToastClose} />
     </>
   );

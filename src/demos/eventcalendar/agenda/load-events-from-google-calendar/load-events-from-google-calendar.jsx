@@ -63,12 +63,12 @@ function App() {
         break;
       case 'week':
         view = {
-          schedule: { type: 'week' },
+          scheduler: { type: 'week' },
         };
         break;
       case 'day':
         view = {
-          schedule: { type: 'day' },
+          scheduler: { type: 'day' },
         };
         break;
       case 'agenda':

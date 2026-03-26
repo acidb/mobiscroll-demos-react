@@ -16,7 +16,7 @@ function App() {
   const calInst = useRef();
   const timer = useRef(null);
 
-  const calView = useMemo(() => ({ timeline: { type: 'month', eventList: true } }), []);
+  const calView = useMemo(() => ({ timeline: { type: 'month', eventDisplay: 'fill' } }), []);
   const listView = useMemo(() => ({ agenda: { type: 'year', size: 5 } }), []);
 
   const myResources = useMemo(

@@ -39,7 +39,7 @@ function App() {
     },
   ]);
 
-  const myView = useMemo(() => ({ schedule: { type: 'week' } }), []);
+  const myView = useMemo(() => ({ scheduler: { type: 'week' } }), []);
 
   const addDateObjEvent = useCallback(() => {
     const newEvent = {

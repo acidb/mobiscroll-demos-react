@@ -27,7 +27,7 @@ function App() {
     () => ({
       timeline: {
         type: 'year',
-        eventList: true,
+        eventDisplay: 'fill',
       },
     }),
     [],

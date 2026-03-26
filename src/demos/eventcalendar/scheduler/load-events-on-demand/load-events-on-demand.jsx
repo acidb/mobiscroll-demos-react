@@ -12,7 +12,7 @@ function App() {
 
   const myView = useMemo(
     () => ({
-      schedule: { type: 'day' },
+      scheduler: { type: 'day' },
     }),
     [],
   );

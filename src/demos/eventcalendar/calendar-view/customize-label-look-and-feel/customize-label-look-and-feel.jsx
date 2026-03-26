@@ -32,9 +32,7 @@ function App() {
       ) : (
         <>
           <div className="single-day-event-dot" style={{ background: data.original.color }}></div>
-          <div className="single-day-event" style={{ color: '#000' }}>
-            {data.original.title}
-          </div>
+          <div className="single-day-event">{data.original.title}</div>
         </>
       ),
     [],
@@ -54,7 +52,7 @@ function App() {
     <>
       <Eventcalendar
         // drag
-        renderLabel={customLabel}
+        renderCalendarEvent={customLabel}
         data={myEvents}
         view={myView}
         onEventClick={handleEventClick}

@@ -34,7 +34,7 @@ function App() {
         break;
       case 'schedule':
         calendarView = {
-          schedule: {
+          scheduler: {
             type: 'week',
           },
         };
