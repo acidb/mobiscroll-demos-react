@@ -82,7 +82,8 @@ function App() {
   const [name, setName] = useState('');
   const [calories, setCalories] = useState('');
   const [notes, setNotes] = useState('');
-  const [headerText, setHeader] = useState('');
+  const [headerPrimary, setHeaderPrimary] = useState('');
+  const [headerDate, setHeaderDate] = useState('');
   const [type, setType] = useState(1);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -144,11 +145,23 @@ function App() {
     setPopupOpen(false);
   }, [deleteEvent, tempMeal]);
 
+  const renderPopupHeader = useCallback(
+    () => (
+      <>
+        <div className="md-meal-planner-header-primary">{headerPrimary}</div>
+        <div className="md-meal-planner-header-date">{headerDate}</div>
+      </>
+    ),
+    [headerPrimary, headerDate],
+  );
+
   // Scheduler options
   const handleEventClick = useCallback(
     (args) => {
       const event = args.event;
-      setHeader('New meal - ' + formatDate('DDDD, DD MMMM YYYY', new Date(event.start)));
+      const resource = args.resourceObj;
+      setHeaderPrimary(resource.name);
+      setHeaderDate(formatDate('DDDD, DD MMMM YYYY', new Date(event.start)));
       setType(event.resource);
       setEdit(true);
       setTempMeal({ ...event });
@@ -162,8 +175,8 @@ function App() {
   const handleEventCreated = useCallback(
     (args) => {
       const event = args.event;
-      const resource = args.resourceObj;
-      setHeader(resource.name + ' - ' + formatDate('DDDD, DD MMMM YYYY', new Date(event.start)));
+      setHeaderPrimary('New meal');
+      setHeaderDate(formatDate('DDDD, DD MMMM YYYY', new Date(event.start)));
       setType(event.resource);
       setEdit(false);
       setTempMeal(event);
@@ -292,7 +305,7 @@ function App() {
         display="bottom"
         fullScreen={true}
         contentPadding={false}
-        headerText={headerText}
+        renderHeader={renderPopupHeader}
         buttons={popupButtons}
         isOpen={isPopupOpen}
         onClose={onPopupClose}

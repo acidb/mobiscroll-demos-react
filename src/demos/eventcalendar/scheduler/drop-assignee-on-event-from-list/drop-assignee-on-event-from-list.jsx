@@ -36,13 +36,13 @@ function EmployeeItem({ employee, assignmentCount, onDragStart }) {
   }, []);
 
   return (
-    <div className="mds-employee-item mbsc-flex" ref={setElm} onPointerDown={onDragStart}>
-      <div className="mds-employee-avatar mbsc-flex" style={{ background: employee.color }}>
+    <div className="mds-drop-on-events-employee-item mbsc-flex" ref={setElm} onPointerDown={onDragStart}>
+      <div className="mds-drop-on-events-employee-avatar mbsc-flex" style={{ background: employee.color }}>
         {employee.avatar}
       </div>
-      <div className="mds-employee-info mbsc-flex">
-        <div className="mds-employee-name">{employee.name}</div>
-        <div className="mds-employee-count">
+      <div className="mds-drop-on-events-employee-info mbsc-flex">
+        <div className="mds-drop-on-events-employee-name">{employee.name}</div>
+        <div className="mds-drop-on-events-employee-count">
           {assignmentCount > 0 ? `${assignmentCount} meeting${assignmentCount > 1 ? 's' : ''}` : 'No assignments'}
         </div>
       </div>
@@ -112,20 +112,20 @@ function SchedulerEvent({ data, findConflict, onAssign, onRemove, onToast }) {
   }, []);
 
   return (
-    <div ref={setDropElm} className={`mds-custom-event mbsc-flex ${dropState}`} style={{ borderLeft: `4px solid ${event.color}` }}>
+    <div ref={setDropElm} className={`mds-drop-on-events-custom-event mbsc-flex ${dropState}`} style={{ borderLeft: `4px solid ${event.color}` }}>
       <Dropcontainer element={dropEl} onItemDrop={handleItemDrop} onItemDragEnter={handleDragEnter} onItemDragLeave={handleDragLeave} />
-      <div className="mds-event-header mbsc-flex">
-        <div className="mds-event-title">{event.title}</div>
-        <div className="mds-event-time">
+      <div className="mds-drop-on-events-event-header mbsc-flex">
+        <div className="mds-drop-on-events-event-title">{event.title}</div>
+        <div className="mds-drop-on-events-event-time">
           {data.start} - {data.end}
         </div>
       </div>
       {attendees.length > 0 && (
-        <div className="mds-event-attendees mbsc-flex">
+        <div className="mds-drop-on-events-event-attendees mbsc-flex">
           {attendees.map((att) => (
             <span
               key={att.id}
-              className="mds-attendee-chip"
+              className="mds-drop-on-events-attendee-chip"
               style={{ background: att.color }}
               title={`${att.name} (click to remove)`}
               onClick={(e) => {
@@ -134,12 +134,12 @@ function SchedulerEvent({ data, findConflict, onAssign, onRemove, onToast }) {
               }}
             >
               {att.avatar}
-              <span className="mds-attendee-remove">&times;</span>
+              <span className="mds-drop-on-events-attendee-remove">&times;</span>
             </span>
           ))}
         </div>
       )}
-      <div className="mds-event-drop-hint">Drop people to assign</div>
+      <div className="mds-drop-on-events-event-drop-hint">Drop people to assign</div>
     </div>
   );
 }
@@ -161,7 +161,10 @@ function App() {
       end: dyndatetime('y,m,d,11'),
       resource: 1,
       color: '#b52db9',
-      attendees: [],
+      attendees: [
+        { id: 'emp1', name: 'Alice Martin', avatar: 'AM', color: '#e74c3c' },
+        { id: 'emp2', name: 'Bob Johnson', avatar: 'BJ', color: '#3498db' },
+      ],
     },
     {
       id: 'evt2',
@@ -179,7 +182,10 @@ function App() {
       end: dyndatetime('y,m,d,18'),
       resource: 2,
       color: '#88bd42',
-      attendees: [],
+      attendees: [
+        { id: 'emp3', name: 'Carol Smith', avatar: 'CS', color: '#2ecc71' },
+        { id: 'emp4', name: 'David Lee', avatar: 'DL', color: '#f39c12' },
+      ],
     },
     {
       id: 'evt4',
@@ -490,12 +496,12 @@ function App() {
   }, []);
 
   return (
-    <Page className={`mds-scheduler-drop-assignee-on-event-from-list${isExternalDragging ? ' mds-external-dragging' : ''}`}>
+    <Page className={`mds-drop-on-events${isExternalDragging ? ' mds-drop-on-events-external-dragging' : ''}`}>
       <div className="mbsc-grid mbsc-no-padding">
         <div className="mbsc-row">
-          <div className="mbsc-col-sm-3 mbsc-flex-col mds-sidebar">
+          <div className="mbsc-col-sm-3 mbsc-flex-col mds-drop-on-events-sidebar">
             <div className="mbsc-form-group-title">Team Members</div>
-            <div className="mds-employee-list mbsc-flex">
+            <div className="mds-drop-on-events-employee-list mbsc-flex">
               {employees.map((emp) => (
                 <EmployeeItem
                   key={emp.id}
@@ -506,7 +512,7 @@ function App() {
               ))}
             </div>
           </div>
-          <div className="mbsc-col-sm-9 mds-calendar-wrapper">
+          <div className="mbsc-col-sm-9 mds-drop-on-events-calendar-wrapper">
             <Eventcalendar
               view={myView}
               data={meetings}

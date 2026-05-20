@@ -200,7 +200,8 @@ function App() {
   const [endInput, setEndInput] = useState();
   const [minTime, setMinTime] = useState();
   const [maxTime, setMaxTime] = useState();
-  const [popupHeader, setPopupHeader] = useState();
+  const [headerPrimary, setHeaderPrimary] = useState('');
+  const [headerDate, setHeaderDate] = useState('');
   const [toastMessage, setToastMessage] = useState();
   const [isEdit, setEdit] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -412,6 +413,16 @@ function App() {
     [deletedShift],
   );
 
+  const renderPopupHeader = useCallback(
+    () => (
+      <>
+        <div className="mds-employee-shifts-header-primary">{headerPrimary}</div>
+        <div className="mds-employee-shifts-header-date">{headerDate}</div>
+      </>
+    ),
+    [headerPrimary, headerDate],
+  );
+
   const handleEventClick = useCallback(
     (args) => {
       const event = args.event;
@@ -419,16 +430,8 @@ function App() {
       const slot = args.slotObj;
 
       fillPopup(event, true);
-      setPopupHeader(
-        'Edit ' +
-          resource.name +
-          "'s hours - " +
-          formatDate('DDD', new Date(event.start)) +
-          ' ' +
-          slot.name +
-          ', ' +
-          formatDate('D MMM YYYY', new Date(event.start)),
-      );
+      setHeaderPrimary('Edit ' + resource.name + "'s hours");
+      setHeaderDate(formatDate('DDDD', new Date(event.start)) + ' ' + slot.name + ', ' + formatDate('D MMMM YYYY', new Date(event.start)));
       setPopupOpen(true);
     },
     [fillPopup],
@@ -440,14 +443,8 @@ function App() {
       const slot = args.slotObj;
 
       fillPopup(event, false);
-      setPopupHeader(
-        'New shift - ' +
-          formatDate('DDD', new Date(event.start)) +
-          ' ' +
-          slot.name +
-          ', ' +
-          formatDate('D MMM YYYY', new Date(event.start)),
-      );
+      setHeaderPrimary('New shift');
+      setHeaderDate(formatDate('DDDD', new Date(event.start)) + ' ' + slot.name + ', ' + formatDate('D MMMM YYYY', new Date(event.start)));
       setPopupOpen(true);
     },
     [fillPopup],
@@ -550,12 +547,11 @@ function App() {
         onEventUpdateFailed={handleEventUpdateFailed}
       />
       <Popup
-        cssClass="mds-employee-shifts-popup"
         buttons={popupButtons}
         display="bottom"
         contentPadding={false}
         fullScreen={true}
-        headerText={popupHeader}
+        renderHeader={renderPopupHeader}
         isOpen={isPopupOpen}
         responsive={popupResponsive}
         scrollLock={false}
