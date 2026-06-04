@@ -439,7 +439,7 @@ function App() {
         view={myView}
         selectedDate={currentDate}
         extendDefaultEvent={myDefaultEvent}
-        renderDay={customDay}
+        renderCalendarDay={customDay}
         renderHeader={customHeader}
         onCellClick={onCellClick}
         onSelectedDateChange={handleSelectedDateChange}

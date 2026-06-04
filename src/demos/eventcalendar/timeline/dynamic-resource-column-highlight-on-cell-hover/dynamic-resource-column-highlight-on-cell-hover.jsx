@@ -90,7 +90,7 @@ function App() {
 
   const renderSidebar = useCallback((resource) => <div>{resource.name} Sidebar</div>, []);
 
-  const renderDay = useCallback(
+  const renderTimelineDay = useCallback(
     (day) => {
       const isHover = hoverDate && day.date.getTime() === hoverDate.getTime();
       const hoverClass = isHover ? ' mds-highlight-col-hover' : '';
@@ -116,7 +116,7 @@ function App() {
         resources={myResources}
         renderCell={renderCell}
         renderSidebar={renderSidebar}
-        renderDay={renderDay}
+        renderTimelineDay={renderTimelineDay}
         renderDayFooter={renderDayFooter}
         onCellHoverIn={handleCellHoverIn}
         onCellHoverOut={handleCellHoverOut}

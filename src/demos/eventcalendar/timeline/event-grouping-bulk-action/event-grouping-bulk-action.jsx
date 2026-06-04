@@ -2834,7 +2834,7 @@ function App() {
         resources={myResources}
         renderHeader={renderCustomHeader}
         renderResource={renderCustomResource}
-        renderScheduleEvent={groupByClientQuarter ? renderGroupedEvent : renderSimpleEvent}
+        renderTimelineEvent={groupByClientQuarter ? renderGroupedEvent : renderSimpleEvent}
         onEventUpdate={handleEventUpdate}
       />
       <Datepicker
