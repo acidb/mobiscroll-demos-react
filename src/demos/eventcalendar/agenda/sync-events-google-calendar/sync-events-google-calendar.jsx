@@ -80,22 +80,22 @@ function App() {
       const checked = ev.target.checked;
       const calendarId = ev.target.value;
       calendarData[calendarId].checked = checked;
-      if (checked) {
-        setLoading(true);
-        setCalendarIds((oldCalendarIds) => [...oldCalendarIds, calendarId]);
-        googleCalendarSync
-          .getEvents([calendarId], startDate.current, endDate.current)
-          .then((events) => {
-            setLoading(false);
-            setEvents((oldEvents) => [...oldEvents, ...events]);
-          })
-          .catch(handleError);
-      } else {
-        setCalendarIds((oldCalendarIds) => oldCalendarIds.filter((id) => id !== calendarId));
-        setEvents((oldEvents) => oldEvents.filter((event) => event.googleCalendarId !== calendarId));
+      const newCalendarIds = checked ? [...calendarIds, calendarId] : calendarIds.filter((id) => id !== calendarId);
+      setCalendarIds(newCalendarIds);
+      if (newCalendarIds.length === 0) {
+        setEvents([]);
+        return;
       }
+      setLoading(true);
+      googleCalendarSync
+        .getEvents(newCalendarIds, startDate.current, endDate.current)
+        .then((events) => {
+          setLoading(false);
+          setEvents(events);
+        })
+        .catch(handleError);
     },
-    [calendarData, handleError],
+    [calendarData, calendarIds, handleError],
   );
 
   const openPopup = useCallback(() => {

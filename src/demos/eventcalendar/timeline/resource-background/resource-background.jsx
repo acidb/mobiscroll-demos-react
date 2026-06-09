@@ -58,7 +58,7 @@ function App() {
         id: 7,
         name: 'Resource H - Grid background with "cssClass" property',
         color: '#34c8e0',
-        cssClass: 'md-row-only-bg'
+        cssClass: 'md-row-only-bg',
       },
     ],
     [],
@@ -106,14 +106,7 @@ function App() {
     [],
   );
 
-  const customSidebar = useCallback(
-    (resource) => (
-      <div className="md-resource-bg-res-cont">
-        {resource.name} Sidebar
-      </div>
-    ),
-    [],
-  );
+  const customSidebar = useCallback((resource) => <div className="md-resource-bg-res-cont">{resource.name} Sidebar</div>, []);
 
   return (
     <Eventcalendar
