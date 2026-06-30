@@ -73,8 +73,8 @@ function App() {
         allDay: false,
         startDay: 1,
         endDay: 5,
-        startTime: '08:00',
-        endTime: '17:00',
+        startTime: '05:00',
+        endTime: '22:00',
       },
     }),
     [],
@@ -148,13 +148,12 @@ function App() {
         text: 'OK',
         keyCode: 'enter',
         handler: () => {
-          tempEvent.resource = participants;
-          tempEvent.title = title;
+          const updatedEvent = { ...tempEvent, resource: participants, title };
 
           if (isNewEvent) {
-            setEvents([...myEvents, tempEvent]);
+            setEvents([...myEvents, updatedEvent]);
           } else {
-            setEvents([...myEvents]);
+            setEvents(myEvents.map((item) => (item.id === updatedEvent.id ? updatedEvent : item)));
           }
 
           // Update event with the new properties on OK button click

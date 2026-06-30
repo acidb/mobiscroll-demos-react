@@ -8,7 +8,7 @@ import {
   SegmentedGroup,
   setOptions /* localeImport */,
 } from '@mobiscroll/react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import './customizing-header.css';
 
 setOptions({
@@ -17,40 +17,54 @@ setOptions({
 });
 
 function App() {
-  const calendarHeaderCustom = () => (
-    <>
-      <CalendarPrev className="custom-prev" />
-      <CalendarNav className="custom-nav" />
-      <CalendarNext className="custom-next" />
-    </>
-  );
-  const calendarHeaderToday = () => (
-    <>
-      <CalendarNav />
-      <div className="custom-buttons">
-        <CalendarPrev />
-        <CalendarToday />
-        <CalendarNext />
-      </div>
-    </>
-  );
   const [calendarType, setCalendarType] = useState('week');
-  const calendarHeaderSwitch = () => (
-    <>
-      <CalendarNav className="custom-view-nav" />
-      <div className="custom-view">
-        <SegmentedGroup value={calendarType} onChange={changeView}>
-          <Segmented value="week" icon="material-date-range" />
-          <Segmented value="month" icon="material-event-note" />
-        </SegmentedGroup>
-      </div>
-      <CalendarPrev />
-      <CalendarNext />
-    </>
+
+  const calendarHeaderCustom = useCallback(
+    () => (
+      <>
+        <CalendarPrev className="custom-prev" />
+        <CalendarNav className="custom-nav" />
+        <CalendarNext className="custom-next" />
+      </>
+    ),
+    [],
   );
-  const changeView = (event) => {
+
+  const calendarHeaderToday = useCallback(
+    () => (
+      <>
+        <CalendarNav />
+        <div className="custom-buttons">
+          <CalendarPrev />
+          <CalendarToday />
+          <CalendarNext />
+        </div>
+      </>
+    ),
+    [],
+  );
+
+  const changeView = useCallback((event) => {
     setCalendarType(event.target.value);
-  };
+  }, []);
+
+  const calendarHeaderSwitch = useCallback(
+    () => (
+      <>
+        <CalendarNav className="custom-view-nav" />
+        <div className="custom-view">
+          <SegmentedGroup value={calendarType} onChange={changeView}>
+            <Segmented value="week" icon="material-date-range" />
+            <Segmented value="month" icon="material-event-note" />
+          </SegmentedGroup>
+        </div>
+        <CalendarPrev />
+        <CalendarNext />
+      </>
+    ),
+    [calendarType, changeView],
+  );
+
   return (
     <div>
       <Datepicker controls={['calendar']} display="inline" calendarType="week" calendarSize={2} />

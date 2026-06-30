@@ -1415,10 +1415,9 @@ function App() {
   const handleCheckboxChange = useCallback(
     (ev) => {
       const key = ev.target.value;
-      tempFilters[key] = !tempFilters[key];
-      setTempFilters({ ...tempFilters });
+      setTempFilters((currentTempFilters) => ({ ...currentTempFilters, [key]: !currentTempFilters[key] }));
     },
-    [tempFilters],
+    [],
   );
 
   const renderCustomResource = useCallback(

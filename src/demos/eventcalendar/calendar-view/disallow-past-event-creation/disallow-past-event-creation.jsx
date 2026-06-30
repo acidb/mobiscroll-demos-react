@@ -1,5 +1,5 @@
 import { Eventcalendar, getJson, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import './disallow-past-event-creation.css';
 
 setOptions({
@@ -14,7 +14,7 @@ function App() {
   const [isToastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  const { current: myView } = useRef({ calendar: { labels: true } });
+  const myView = useMemo(() => ({ calendar: { labels: true } }), []);
 
   const myInvalid = useMemo(
     () => [

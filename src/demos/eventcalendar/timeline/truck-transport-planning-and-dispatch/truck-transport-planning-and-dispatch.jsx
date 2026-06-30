@@ -1174,14 +1174,12 @@ function App() {
     const mInvalids = buildMaintenanceInvalids();
     const fResources = computeFilteredResources(null, '');
     const end = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000);
-    /* eslint-disable react-hooks/set-state-in-effect */
     setMaintenanceInvalids(mInvalids);
     setCalendarInvalid(mInvalids);
     setFilteredResources(fResources);
     setMyEvents([...myEventsRef.current]);
     setCalendarRangeValue([today, end]);
     setRangeLabel(formatDate('MMM D', today) + ' – ' + formatDate('MMM D, YYYY', end));
-    /* eslint-enable react-hooks/set-state-in-effect */
     refreshJobList(null, []);
     const interval = setInterval(() => {
       nowRef.current = new Date();

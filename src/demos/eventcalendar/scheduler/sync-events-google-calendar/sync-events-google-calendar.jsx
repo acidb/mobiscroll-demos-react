@@ -36,11 +36,11 @@ function App() {
   const [isUpdateConfirmOpen, setUpdateConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const myView = useMemo(() => ({ scheduler: { type: 'week' } }), []);
-
   const debounce = useRef();
   const startDate = useRef();
   const endDate = useRef();
+
+  const myView = useMemo(() => ({ scheduler: { type: 'week' } }), []);
 
   const onError = useCallback((resp) => {
     setToastMessage(resp.error ? resp.error : resp.result.error.message);
@@ -74,8 +74,9 @@ function App() {
     (ev) => {
       const checked = ev.target.checked;
       const calendarId = ev.target.value;
-      calendarData[calendarId].checked = checked;
+      const updatedCalendarData = { ...calendarData, [calendarId]: { ...calendarData[calendarId], checked } };
       const newCalendarIds = checked ? [...calendarIds, calendarId] : calendarIds.filter((id) => id !== calendarId);
+      setCalendarData(updatedCalendarData);
       setCalendarIds(newCalendarIds);
       if (newCalendarIds.length === 0) {
         setEvents([]);

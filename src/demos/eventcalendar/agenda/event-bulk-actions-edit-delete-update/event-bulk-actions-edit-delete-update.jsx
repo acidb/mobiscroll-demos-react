@@ -46,10 +46,10 @@ function App() {
           recurring: undefined,
         };
         // Update the original event with a recurring exception
-        const updatedEvent = event.original;
-        const updatedExceptionDates = updatedEvent.recurringException || [];
-        updatedExceptionDates.push(event.start);
-        updatedEvent.recurringException = updatedExceptionDates;
+        const updatedEvent = {
+          ...event.original,
+          recurringException: [...(event.original.recurringException || []), event.start],
+        };
         updatedEvents.splice(index, 1, updatedEvent);
         updatedEvents.push(newEvent);
       } else {
@@ -97,10 +97,10 @@ function App() {
           // Handle recurring event occurrence
           if (event.recurring) {
             // Update the original event with a recurring exception
-            const updatedEvent = event.original;
-            const updatedExceptionDates = updatedEvent.recurringException || [];
-            updatedExceptionDates.push(event.start);
-            updatedEvent.recurringException = updatedExceptionDates;
+            const updatedEvent = {
+              ...event.original,
+              recurringException: [...(event.original.recurringException || []), event.start],
+            };
             updatedEvents.splice(index, 1, updatedEvent);
           } else {
             // Remove the event

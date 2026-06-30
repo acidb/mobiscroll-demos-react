@@ -10,7 +10,7 @@ import {
   Switch,
   Toast /* localeImport */,
 } from '@mobiscroll/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './sync-events-google-calendar.css';
 
 setOptions({
@@ -31,11 +31,12 @@ function App() {
   const [mySelectedDate, setSelectedDate] = useState(new Date());
   const [toastMessage, setToastMessage] = useState('');
 
-  const { current: myView } = useRef({ agenda: { type: 'month' } });
   const buttonRef = useRef();
   const startDate = useRef();
   const endDate = useRef();
   const timer = useRef();
+
+  const myView = useMemo(() => ({ agenda: { type: 'month' } }), []);
 
   const handleError = useCallback((resp) => {
     setToastMessage(resp.error ? resp.error : resp.result.error.message);
@@ -79,8 +80,9 @@ function App() {
     (ev) => {
       const checked = ev.target.checked;
       const calendarId = ev.target.value;
-      calendarData[calendarId].checked = checked;
+      const updatedCalendarData = { ...calendarData, [calendarId]: { ...calendarData[calendarId], checked } };
       const newCalendarIds = checked ? [...calendarIds, calendarId] : calendarIds.filter((id) => id !== calendarId);
+      setCalendarData(updatedCalendarData);
       setCalendarIds(newCalendarIds);
       if (newCalendarIds.length === 0) {
         setEvents([]);

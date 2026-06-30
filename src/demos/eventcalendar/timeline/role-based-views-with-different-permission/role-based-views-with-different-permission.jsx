@@ -110,15 +110,24 @@ const initialResources = [
 ];
 
 function App() {
-  const user = useMemo(() => ({ id: 2, name: 'Willis Cane', role: 'limited' }), []);
+  const [isToastOpen, setToastOpen] = useState(false);
 
+  const user = useMemo(() => ({ id: 2, name: 'Willis Cane', role: 'limited' }), []);
   /* Other user examples
   const user = useMemo(() => ({ name: 'Client', role: 'readonly' }), []);
   const user = useMemo(() => ({ name: 'Project Manager', role: 'full' }), []); */
 
-  const [editEvents, setEditEvents] = useState(false);
-  const [isToastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const editEvents = useMemo(() => user.role !== 'readonly', [user]);
+
+  const toastMessage = useMemo(() => {
+    if (user.role === 'readonly') {
+      return 'Client with read-only access logged in';
+    }
+    if (user.role === 'limited') {
+      return 'User ' + user.name + ' with limited access logged in';
+    }
+    return 'User with full access logged in';
+  }, [user]);
 
   const myView = useMemo(
     () => ({
@@ -131,8 +140,24 @@ function App() {
     [],
   );
 
-  const [myEvents, setEvents] = useState(initialEvents);
-  const [myResources, setResources] = useState(initialResources);
+  const myEvents = useMemo(
+    () =>
+      initialEvents.map((task) => {
+        if (user.role === 'readonly') {
+          return { ...task, editable: false, color: '#af2ec3' };
+        }
+        if (user.role === 'limited') {
+          return { ...task, editable: task.resource === user.id, color: task.resource !== user.id ? '#6a6a6a' : '#af2424' };
+        }
+        return task;
+      }),
+    [user],
+  );
+
+  const myResources = useMemo(
+    () => initialResources.map((res) => (user.role === 'limited' && res.id !== user.id ? { ...res, eventCreation: false } : res)),
+    [user],
+  );
 
   const getDefaultEvent = useCallback(
     () => ({
@@ -145,44 +170,12 @@ function App() {
     setToastOpen(false);
   }, []);
 
-  // Simulate login
   useEffect(() => {
-    const newTasks = [...initialEvents];
-    const newResources = [...initialResources];
-
-    if (user.role === 'readonly') {
-      for (const task of newTasks) {
-        task.editable = false;
-        task.color = '#af2ec3';
-      }
-
-      setToastMessage('Client with read-only access logged in');
-    } else if (user.role === 'limited') {
-      for (const task of newTasks) {
-        if (task.resource !== user.id) {
-          task.editable = false;
-          task.color = '#6a6a6a';
-        } else {
-          task.color = '#af2424';
-        }
-      }
-
-      for (const res of newResources) {
-        if (res.id !== user.id) {
-          res.eventCreation = false;
-        }
-      }
-
-      setToastMessage('User ' + user.name + ' with limited access logged in');
-    } else {
-      setToastMessage('User with full access logged in');
-    }
-
-    setEvents(newTasks);
-    setResources(newResources);
-    setEditEvents(user.role !== 'readonly');
-    setToastOpen(true);
-  }, [user]);
+    const timer = setTimeout(() => {
+      setToastOpen(true);
+    });
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>

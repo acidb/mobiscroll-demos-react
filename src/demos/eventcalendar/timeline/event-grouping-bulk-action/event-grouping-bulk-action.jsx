@@ -2758,7 +2758,8 @@ function App() {
         );
 
         if (resourceChanged) {
-          let fromName, toName;
+          let fromName;
+          let toName;
           if (groupBy === 'assignee') {
             const fromRes = assigneeResources.find((r) => r.id === oldResource);
             const toRes = assigneeResources.find((r) => r.id === newResource);

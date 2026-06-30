@@ -15,7 +15,7 @@ import {
   Textarea,
   updateRecurringEvent /* localeImport */,
 } from '@mobiscroll/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import './recurring-event-add-edit-dialog.css';
 
 setOptions({
@@ -220,6 +220,17 @@ function getWeekDayNum(date) {
   return Math.max(1, count);
 }
 
+function getMonthDays(month) {
+  const day30 = [2, 4, 6, 9, 11];
+  const newValues = [];
+  for (let i = 1; i <= 31; i++) {
+    if (!(i === 31 && day30.includes(month)) && !(i === 30 && month === 2)) {
+      newValues.push(i);
+    }
+  }
+  return newValues;
+}
+
 function App() {
   const [myEvents, setMyEvents] = useState(defaultEvents);
   const [tempEvent, setTempEvent] = useState(null);
@@ -275,15 +286,15 @@ function App() {
   ]);
   const [selectedRepeat, setSelectedRepeat] = useState('norepeat');
   const [repeatType, setRepeatType] = useState('daily');
-  const [repeatNr, setRepeatNr] = useState('1');
+  const [repeatNr, setRepeatNr] = useState(1);
   const [condition, setCondition] = useState('never');
   const [untilDate, setUntilDate] = useState();
-  const [occurrences, setOccurrences] = useState('10');
+  const [occurrences, setOccurrences] = useState(10);
   const [selectedMonth, setMonth] = useState(1);
-  const [monthlyDays, setMonthlyDays] = useState(['1']);
-  const [monthlyDay, setMonthlyDay] = useState('1');
-  const [yearlyDays, setYearlyDays] = useState(['1']);
-  const [yearlyDay, setYearlyDay] = useState('1');
+  const [monthlyDays, setMonthlyDays] = useState(() => getMonthDays(1));
+  const [monthlyDay, setMonthlyDay] = useState(1);
+  const [yearlyDays, setYearlyDays] = useState(() => getMonthDays(1));
+  const [yearlyDay, setYearlyDay] = useState(1);
   const [weekDays, setWeekDays] = useState(['SU']);
 
   const [originalRecurringEvent, setOriginalRecurringEvent] = useState();
@@ -403,7 +414,7 @@ function App() {
           };
           break;
         case 'yearly-pos':
-          tempEvent.recurring = {
+          recurringRule = {
             repeat: 'yearly',
             month: d.getMonth() + 1,
             weekDays: days[weekday].short,
@@ -697,27 +708,17 @@ function App() {
   }, [deleteEvent, tempEvent]);
 
   // Popuplate data for months
-  const populateMonthDays = useCallback(
-    (month, type) => {
-      const day30 = [2, 4, 6, 9, 11];
-      let newValues = [];
+  const populateMonthDays = useCallback((month, type) => {
+    const newValues = getMonthDays(month);
 
-      for (let i = 1; i <= 31; i++) {
-        if (!(i === 31 && day30.includes(month)) && !(i === 30 && month === 2)) {
-          newValues.push(i.toString());
-        }
-      }
-
-      if (type === 'monthly') {
-        setMonthlyDays(newValues);
-        setMonthlyDay(1);
-      } else {
-        setYearlyDays(newValues);
-        setYearlyDay(1);
-      }
-    },
-    [setMonthlyDays, setYearlyDays],
-  );
+    if (type === 'monthly') {
+      setMonthlyDays(newValues);
+      setMonthlyDay(1);
+    } else {
+      setYearlyDays(newValues);
+      setYearlyDay(1);
+    }
+  }, []);
 
   const repeatChange = useCallback((ev) => {
     setSelectedRepeat(ev.value);
@@ -934,26 +935,27 @@ function App() {
           if (recurringDelete) {
             deleteRecurringEvent();
           } else {
+            const updatedEvent = { ...tempEvent };
             if (editFromPopup) {
-              tempEvent.title = popupEventTitle;
-              tempEvent.description = popupEventDescription;
-              tempEvent.start = popupEventDate[0];
-              tempEvent.end = popupEventDate[1];
-              tempEvent.allDay = popupEventAllDay;
-              tempEvent.recurring = getCustomRule();
+              updatedEvent.title = popupEventTitle;
+              updatedEvent.description = popupEventDescription;
+              updatedEvent.start = popupEventDate[0];
+              updatedEvent.end = popupEventDate[1];
+              updatedEvent.allDay = popupEventAllDay;
+              updatedEvent.recurring = getCustomRule();
             }
 
             if (recurringEditMode === 'current') {
-              delete tempEvent.id;
-              delete tempEvent.recurring;
-              delete tempEvent.recurringException;
+              delete updatedEvent.id;
+              delete updatedEvent.recurring;
+              delete updatedEvent.recurringException;
             }
 
             const events = updateRecurringEvent(
               originalRecurringEvent,
               eventOccurrence,
               editFromPopup ? null : newEvent,
-              editFromPopup ? tempEvent : null,
+              editFromPopup ? updatedEvent : null,
               recurringEditMode,
             );
 
@@ -1004,13 +1006,6 @@ function App() {
     setRecurringEditMode('current');
     setRecurringEditOpen(false);
   }, []);
-
-  useEffect(() => {
-    populateMonthDays(1, 'monthly');
-    setMonthlyDay(1);
-    populateMonthDays(1, 'yearly');
-    setYearlyDay(1);
-  }, [populateMonthDays]);
 
   return (
     <div>

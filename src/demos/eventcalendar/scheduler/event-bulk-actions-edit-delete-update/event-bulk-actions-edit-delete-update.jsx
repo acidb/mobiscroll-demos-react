@@ -65,13 +65,14 @@ function App() {
         for (const event of mySelectedEvents) {
           if (event.recurring) {
             const origEvent = event.original;
-            let exc = origEvent.recurringException || [];
-            exc = [...exc, event.start];
-            origEvent.recurringException = exc;
+            const updatedOrigEvent = {
+              ...origEvent,
+              recurringException: [...(origEvent.recurringException || []), event.start],
+            };
 
             // Update the event in the list
-            const index = eventsToUpdate.findIndex((x) => x.id === origEvent.id);
-            eventsToUpdate.splice(index, 1, origEvent);
+            const index = eventsToUpdate.findIndex((x) => x.id === updatedOrigEvent.id);
+            eventsToUpdate.splice(index, 1, updatedOrigEvent);
           } else {
             eventsToUpdate = eventsToUpdate.filter((ev) => ev.id !== event.id);
           }
@@ -95,22 +96,23 @@ function App() {
     for (const event of events) {
       if (event.recurring) {
         const origEvent = event.original;
-        let exc = origEvent.recurringException || [];
-        const newEvent = event;
-
-        newEvent.recurring = undefined;
-        newEvent.color = 'orange';
-        newEvent.id += '_' + formatDate('YYYY-MM-DD', event.start);
+        const newEvent = {
+          ...event,
+          recurring: undefined,
+          color: 'orange',
+          id: event.id + '_' + formatDate('YYYY-MM-DD', event.start),
+        };
         eventsToUpdate = [...eventsToUpdate, newEvent];
-
-        exc = [...exc, event.start];
-        origEvent.recurringException = exc;
+        const updatedOrigEvent = {
+          ...origEvent,
+          recurringException: [...(origEvent.recurringException || []), event.start],
+        };
 
         // Update the event in the list
-        const index = eventsToUpdate.findIndex((x) => x.id === origEvent.id);
-        eventsToUpdate.splice(index, 1, origEvent);
+        const index = eventsToUpdate.findIndex((x) => x.id === updatedOrigEvent.id);
+        eventsToUpdate.splice(index, 1, updatedOrigEvent);
       } else {
-        const newEv = event;
+        const newEv = { ...event };
         newEv.color = 'orange';
         const index = eventsToUpdate.findIndex((x) => x.id === newEv.id);
         eventsToUpdate.splice(index, 1, newEv);
@@ -142,12 +144,12 @@ function App() {
     }
   }, [confirmOpen, deleteSelectedEvents]);
 
-  const handlePageLoading = useCallback(() => {
+  const handlePageLoading = useCallback((args) => {
     setTimeout(() => {
-      setFirstDay(firstDay);
-      setLastDay(lastDay);
+      setFirstDay(args.firstDay);
+      setLastDay(args.lastDay);
     });
-  }, [firstDay, lastDay]);
+  }, []);
 
   const handleSelectedEventsChange = useCallback(
     (args) => {

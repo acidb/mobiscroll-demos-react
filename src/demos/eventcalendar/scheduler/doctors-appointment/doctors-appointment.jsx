@@ -1,6 +1,6 @@
 import { Draggable, Dropcontainer, Eventcalendar, setOptions, Toast /* localeImport */ } from '@mobiscroll/react';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { dyndatetime } from '../../../../dyndatetime';
 import './doctors-appointment.css';
 
@@ -40,81 +40,119 @@ Appointment.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-const App = () => {
-  const [myEvents, setEvents] = useState([
-    {
-      id: 'job1',
-      start: dyndatetime('y,m,d,14'),
-      end: dyndatetime('y,m,d,16'),
-      resource: 1,
-      title: 'Myla Bennett',
-      job: 'Wisdom tooth removal',
-      color: '#334ab9',
-    },
-    {
-      id: 'job2',
-      start: dyndatetime('y,m,d,17'),
-      end: dyndatetime('y,m,d,18,30'),
-      resource: 1,
-      title: 'Beatrix Foley',
-      job: 'Braces',
-      color: '#177e70',
-    },
-    {
-      id: 'job3',
-      start: dyndatetime('y,m,d,8'),
-      end: dyndatetime('y,m,d,9,30'),
-      resource: 3,
-      title: 'Frank Watson',
-      job: 'Teeth whitening',
-      color: '#d1891f',
-    },
-    {
-      id: 'job4',
-      start: dyndatetime('y,m,d,10'),
-      end: dyndatetime('y,m,d,12,30'),
-      resource: 3,
-      title: 'Jaime Joyce',
-      job: 'Root canal treatment',
-      color: '#cb3939',
-    },
-    {
-      id: 'job5',
-      start: dyndatetime('y,m,d,13'),
-      end: dyndatetime('y,m,d,14'),
-      resource: 3,
-      title: 'Corey Shepard',
-      job: 'Tooth extraction',
-      color: '#aba343',
-    },
-    {
-      id: 'job6',
-      start: dyndatetime('y,m,d,14'),
-      end: dyndatetime('y,m,d,16'),
-      resource: 4,
-      title: 'Callie Leonard',
-      job: 'Crown and bridge',
-      color: '#1ca11a',
-    },
-    {
-      id: 'job7',
-      start: dyndatetime('y,m,d,17'),
-      end: dyndatetime('y,m,d,18'),
-      resource: 4,
-      title: 'Harley Thomson',
-      job: 'Tartar removal',
-      color: '#a446b5',
-    },
-    {
-      id: 'job8',
-      start: dyndatetime('y,m,d,9'),
-      end: dyndatetime('y,m,d,11'),
-      resource: 6,
-      title: 'Ricky Welch',
-      job: 'Wisdom tooth removal',
-      color: '#334ab9',
-    },
-  ]);
+function App() {
+  const doctors = useMemo(
+    () => [
+      { id: 1, name: 'Dr. Keila Delores' },
+      { id: 2, name: 'Dr. Gene Cortez' },
+      { id: 3, name: 'Dr. Paula Bush' },
+      { id: 4, name: 'Dr. Pete Nichols' },
+      { id: 5, name: 'Dr. Jean Pearson' },
+      { id: 6, name: 'Dr. Thelma Cain' },
+    ],
+    [],
+  );
+
+  const myView = useMemo(
+    () => ({
+      scheduler: {
+        type: 'day',
+        startTime: '08:00',
+        endTime: '20:00',
+        allDay: false,
+      },
+    }),
+    [],
+  );
+
+  const myInvalid = useMemo(() => [{ recurring: { repeat: 'daily', until: yesterday } }, { start: yesterday, end: today }], []);
+
+  const [myEvents, setEvents] = useState(
+    [
+      {
+        id: 'job1',
+        start: dyndatetime('y,m,d,14'),
+        end: dyndatetime('y,m,d,16'),
+        resource: 1,
+        title: 'Myla Bennett',
+        job: 'Wisdom tooth removal',
+        color: '#334ab9',
+      },
+      {
+        id: 'job2',
+        start: dyndatetime('y,m,d,17'),
+        end: dyndatetime('y,m,d,18,30'),
+        resource: 1,
+        title: 'Beatrix Foley',
+        job: 'Braces',
+        color: '#177e70',
+      },
+      {
+        id: 'job3',
+        start: dyndatetime('y,m,d,8'),
+        end: dyndatetime('y,m,d,9,30'),
+        resource: 3,
+        title: 'Frank Watson',
+        job: 'Teeth whitening',
+        color: '#d1891f',
+      },
+      {
+        id: 'job4',
+        start: dyndatetime('y,m,d,10'),
+        end: dyndatetime('y,m,d,12,30'),
+        resource: 3,
+        title: 'Jaime Joyce',
+        job: 'Root canal treatment',
+        color: '#cb3939',
+      },
+      {
+        id: 'job5',
+        start: dyndatetime('y,m,d,13'),
+        end: dyndatetime('y,m,d,14'),
+        resource: 3,
+        title: 'Corey Shepard',
+        job: 'Tooth extraction',
+        color: '#aba343',
+      },
+      {
+        id: 'job6',
+        start: dyndatetime('y,m,d,14'),
+        end: dyndatetime('y,m,d,16'),
+        resource: 4,
+        title: 'Callie Leonard',
+        job: 'Crown and bridge',
+        color: '#1ca11a',
+      },
+      {
+        id: 'job7',
+        start: dyndatetime('y,m,d,17'),
+        end: dyndatetime('y,m,d,18'),
+        resource: 4,
+        title: 'Harley Thomson',
+        job: 'Tartar removal',
+        color: '#a446b5',
+      },
+      {
+        id: 'job8',
+        start: dyndatetime('y,m,d,9'),
+        end: dyndatetime('y,m,d,11'),
+        resource: 6,
+        title: 'Ricky Welch',
+        job: 'Wisdom tooth removal',
+        color: '#334ab9',
+      },
+    ].map((event) => {
+      const start = event.start ? new Date(event.start) : event.start;
+      const end = event.end ? new Date(event.end) : event.end;
+      return {
+        ...event,
+        start,
+        end,
+        // Mark past events as fixed by setting the event.editable property to false
+        editable: !!(start && today < start),
+      };
+    }),
+  );
 
   const [appointments, setAppointments] = useState([
     {
@@ -160,64 +198,6 @@ const App = () => {
   const [dropCont, setDropCont] = useState();
   const [toastMessage, setToastMessage] = useState('');
   const [isToastOpen, setToastOpen] = useState(false);
-
-  const doctors = useMemo(
-    () => [
-      {
-        id: 1,
-        name: 'Dr. Keila Delores',
-      },
-      {
-        id: 2,
-        name: 'Dr. Gene Cortez',
-      },
-      {
-        id: 3,
-        name: 'Dr. Paula Bush',
-      },
-      {
-        id: 4,
-        name: 'Dr. Pete Nichols',
-      },
-      {
-        id: 5,
-        name: 'Dr. Jean Pearson',
-      },
-      {
-        id: 6,
-        name: 'Dr. Thelma Cain',
-      },
-    ],
-    [],
-  );
-
-  const myView = useMemo(
-    () => ({
-      scheduler: {
-        type: 'day',
-        startTime: '08:00',
-        endTime: '20:00',
-        allDay: false,
-      },
-    }),
-    [],
-  );
-
-  const myInvalid = useMemo(
-    () => [
-      {
-        recurring: {
-          repeat: 'daily',
-          until: yesterday,
-        },
-      },
-      {
-        start: yesterday,
-        end: today,
-      },
-    ],
-    [],
-  );
 
   const setDropElm = useCallback((elm) => {
     setDropCont(elm);
@@ -300,19 +280,9 @@ const App = () => {
     setContBg('');
   }, []);
 
-  const handleCloseToast = useCallback(() => {
+  const handleToastClose = useCallback(() => {
     setToastOpen(false);
   }, []);
-
-  useEffect(() => {
-    for (const event of myEvents) {
-      // Convert dates to date objects
-      event.start = event.start ? new Date(event.start) : event.start;
-      event.end = event.end ? new Date(event.end) : event.end;
-      // Mark past events as fixed by setting the event.editable property to false
-      event.editable = !!(event.start && today < event.start);
-    }
-  }, [myEvents]);
 
   return (
     <div className="mbsc-grid mbsc-no-padding">
@@ -337,7 +307,7 @@ const App = () => {
             onEventDragEnter={handleEventDragEnter}
             onEventDragLeave={handleEventDragLeave}
           />
-          <Toast isOpen={isToastOpen} message={toastMessage} onClose={handleCloseToast} />
+          <Toast isOpen={isToastOpen} message={toastMessage} onClose={handleToastClose} />
         </div>
         <div className="mbsc-col-sm-3 docs-appointment-cont" ref={setDropElm} style={{ backgroundColor: contBg }}>
           <Dropcontainer
@@ -355,6 +325,6 @@ const App = () => {
       </div>
     </div>
   );
-};
+}
 
 export default App;

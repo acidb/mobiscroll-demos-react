@@ -18,6 +18,7 @@ setOptions({
 function App() {
   const [myEvents, setEvents] = useState([]);
   const [zoomLevel, setZoomLevel] = useState(9);
+  const [viewDate, setViewDate] = useState(new Date());
 
   const calRef = useRef(null);
 
@@ -47,14 +48,70 @@ function App() {
           8: { type: 'year', size: 25, resolutionHorizontal: 'week', columnWidth: 'xxxlarge' },
           9: { type: 'year', size: 25, resolutionHorizontal: 'day', columnWidth: 'small' },
           10: { type: 'year', size: 25, resolutionHorizontal: 'day', columnWidth: 'xlarge' },
-          11: { type: 'year', size: 3, resolutionHorizontal: 'hour', columnWidth: 'xlarge', timeCellStep: 720, timeLabelStep: 720 },
-          12: { type: 'year', size: 3, resolutionHorizontal: 'hour', columnWidth: 'xlarge', timeCellStep: 360, timeLabelStep: 360 },
-          13: { type: 'year', size: 3, resolutionHorizontal: 'hour', columnWidth: 'xlarge', timeCellStep: 180, timeLabelStep: 180 },
-          14: { type: 'year', size: 3, resolutionHorizontal: 'hour', columnWidth: 'medium', timeCellStep: 60, timeLabelStep: 60 },
-          15: { type: 'month', size: 3, resolutionHorizontal: 'hour', timeCellStep: 30, timeLabelStep: 30, columnWidth: 'medium' },
-          16: { type: 'month', size: 3, resolutionHorizontal: 'hour', timeCellStep: 30, timeLabelStep: 30, columnWidth: 'xxxlarge' },
-          17: { type: 'month', size: 3, resolutionHorizontal: 'hour', timeCellStep: 15, timeLabelStep: 15, columnWidth: 'xxxlarge' },
-          18: { type: 'month', size: 3, resolutionHorizontal: 'hour', timeCellStep: 5, timeLabelStep: 5, columnWidth: 'large' },
+          11: {
+            type: 'year',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            columnWidth: 'xlarge',
+            timeCellStep: 720,
+            timeLabelStep: 720,
+          },
+          12: {
+            type: 'year',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            columnWidth: 'xlarge',
+            timeCellStep: 360,
+            timeLabelStep: 360,
+          },
+          13: {
+            type: 'year',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            columnWidth: 'xlarge',
+            timeCellStep: 180,
+            timeLabelStep: 180,
+          },
+          14: {
+            type: 'year',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            columnWidth: 'medium',
+            timeCellStep: 60,
+            timeLabelStep: 60,
+          },
+          15: {
+            type: 'month',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            timeCellStep: 30,
+            timeLabelStep: 30,
+            columnWidth: 'medium',
+          },
+          16: {
+            type: 'month',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            timeCellStep: 30,
+            timeLabelStep: 30,
+            columnWidth: 'xxxlarge',
+          },
+          17: {
+            type: 'month',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            timeCellStep: 15,
+            timeLabelStep: 15,
+            columnWidth: 'xxxlarge',
+          },
+          18: {
+            type: 'month',
+            size: 3,
+            resolutionHorizontal: 'hour',
+            timeCellStep: 5,
+            timeLabelStep: 5,
+            columnWidth: 'large',
+          },
         },
       },
     }),
@@ -62,7 +119,6 @@ function App() {
   );
 
   const refDate = useMemo(() => {
-    const viewDate = calRef.current ? calRef.current.getViewDate() : new Date();
     if (zoomLevel < 11) {
       return new Date(viewDate.getFullYear() - 12, 0, 1);
     }
@@ -70,18 +126,21 @@ function App() {
       return new Date(viewDate.getFullYear() - 1, 0, 1);
     }
     return new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
-  }, [zoomLevel]);
+  }, [viewDate, zoomLevel]);
 
   const zoomIn = useCallback(() => {
     setZoomLevel((prevZoom) => prevZoom + 1);
+    setViewDate(calRef.current.getViewDate());
   }, []);
 
   const zoomOut = useCallback(() => {
     setZoomLevel((prevZoom) => prevZoom - 1);
+    setViewDate(calRef.current.getViewDate());
   }, []);
 
   const handleSliderChange = useCallback((ev) => {
     setZoomLevel(+ev.target.value);
+    setViewDate(calRef.current.getViewDate());
   }, []);
 
   const myHeader = useCallback(

@@ -8,7 +8,7 @@ import {
   setOptions,
   Toast /* localeImport */,
 } from '@mobiscroll/react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { dyndatetime } from '../../../../dyndatetime';
 import './resource-drag-drop-reorder.css';
 
@@ -128,17 +128,12 @@ function App() {
   const [myResources, setResources] = useState(resources);
   const [tempResources, setTempResources] = useState([...resources]);
   const [message, setMessage] = useState('');
-  const myView = useRef(defaultView);
+  const [myView, setMyView] = useState(defaultView);
 
   const enableReorder = useCallback(() => {
     setReorder(true);
-    myView.current = {
-      timeline: {
-        type: 'month',
-        resourceReorder: true,
-      },
-    };
-  }, [myView]);
+    setMyView({ timeline: { type: 'month', resourceReorder: true } });
+  }, []);
 
   const onToastClose = useCallback(() => {
     setToastOpen(false);
@@ -146,27 +141,17 @@ function App() {
 
   const saveReorder = useCallback(() => {
     setReorder(false);
-    myView.current = {
-      timeline: {
-        type: 'month',
-        resourceReorder: false,
-      },
-    };
+    setMyView({ timeline: { type: 'month', resourceReorder: false } });
     setResources([...tempResources]);
-  }, [tempResources, myView]);
+  }, [tempResources]);
 
   const cancelReorder = useCallback(() => {
     setReorder(false);
     setResources([...myResources]);
-    myView.current = {
-      timeline: {
-        type: 'month',
-        resourceReorder: false,
-      },
-    };
+    setMyView({ timeline: { type: 'month', resourceReorder: false } });
     setMessage('Resource order canceled');
     setToastOpen(true);
-  }, [myResources, myView]);
+  }, [myResources]);
 
   const handleResourceOrder = useCallback((args) => {
     setTempResources(args.resources);
@@ -232,7 +217,7 @@ function App() {
       <Eventcalendar
         resources={myResources}
         immutableData={true}
-        view={myView.current}
+        view={myView}
         data={myEvents}
         renderHeader={customHeader}
         onResourceOrderUpdate={handleResourceOrder}

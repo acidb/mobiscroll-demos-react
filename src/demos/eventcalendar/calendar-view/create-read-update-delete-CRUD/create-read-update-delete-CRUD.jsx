@@ -279,7 +279,7 @@ function App() {
       setEdit(false);
       setEditedEvent(event);
       setAddEditPopupAnchor(target);
-      fillPopup(event);
+      fillPopup({ ...event, allDay: false });
       setAddEditPopupOpen(true);
     },
     [fillPopup],

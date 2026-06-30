@@ -100,6 +100,7 @@ function App() {
         dragToCreate={true}
         dragToMove={true}
         dragToResize={true}
+        externalDrop={true}
         resources={myResources}
         view={myView}
         invalid={invalid}
