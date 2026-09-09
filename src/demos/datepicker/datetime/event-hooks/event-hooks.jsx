@@ -41,9 +41,6 @@ function App() {
         onPageLoading={() => {
           // Use it to load data on demand
         }}
-        onPosition={() => {
-          // Logic for component positioning
-        }}
         onTempChange={() => {
           // Logic for temporary value change
         }}
