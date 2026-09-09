@@ -136,7 +136,6 @@ function App() {
           minTime="08:00"
           maxTime="19:59"
           stepMinute={60}
-          width={null}
           labels={datetimeLabels}
           invalid={datetimeInvalid}
           onPageLoading={handlePageLoadingDatetime}
