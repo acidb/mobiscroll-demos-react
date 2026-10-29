@@ -75,7 +75,7 @@ function App() {
     [],
   );
 
-  return <Eventcalendar view={myView} data={myData} dragToCreate={true} dragToMove={true} dragToResize={true} dragTimeStep={15} />;
+  return <Eventcalendar view={myView} data={myData} selectMultipleEvents={true} dragToCreate={true} dragToMove={true} dragToResize={true} dragTimeStep={15} />;
 }
 
 export default App;
